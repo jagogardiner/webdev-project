@@ -1,0 +1,11 @@
+body{
+    font-family: 'Courier New', Courier, monospace;
+}
+
+header{
+    background-color: darkseagreen;
+    text-align: center;
+    padding: 20px;
+    font-size: x-large;
+    font-family:'Courier New', Courier, monospace
+}
