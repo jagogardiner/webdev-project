@@ -16,3 +16,11 @@ def login():
         _username = request.form['username']
         _password = request.form['password']
     return render_template('login.html')
+
+@app.route("/header")
+def header():
+    return render_template('headers-test.html')
+
+@app.route("/test")
+def test():
+    return render_template('testing.html')
