@@ -15,10 +15,12 @@ def login():
         _password = request.form['password']
     return render_template('login.html')
 
-@app.route("/header")
-def header():
-    return render_template('headers-test.html')
+@app.route("/signup", methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        _username = request.form['username']
+    return render_template('signup.html')
 
-@app.route("/test")
+@app.route("/locations")
 def test():
-    return render_template('testing.html')
+    return render_template('locations.html')
