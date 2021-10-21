@@ -22,5 +22,9 @@ def signup():
     return render_template('signup.html')
 
 @app.route("/locations")
-def test():
+def locations():
     return render_template('locations.html')
+
+@app.route("/test")
+def test():
+    return render_template('test.html')
