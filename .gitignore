@@ -68,3 +68,6 @@ docs/_build/
 
 # macOS
 .DS_Store
+
+# Secrets
+app/.env

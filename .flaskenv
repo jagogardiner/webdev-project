@@ -1,1 +1,3 @@
-FLASK_APP=main.py
+FLASK_APP=app
+TEMPLATES_AUTO_RELOAD=true
+FLASK_ENV=development
