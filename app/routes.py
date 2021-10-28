@@ -9,13 +9,6 @@ def home():
     user = {'username': 'Jago'}
     return render_template('home.html', title='Home', user=user)
 
-# @app.route("/login", methods=['GET', 'POST'])
-# def login():
-#     if request.method == 'POST':
-#         _username = request.form['username']
-#         _password = request.form['password']
-#     return render_template('login.html')
-
 
 @app.route("/locations")
 def locations():
