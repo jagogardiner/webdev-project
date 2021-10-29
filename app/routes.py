@@ -15,6 +15,11 @@ def locations():
     return render_template('locations.html')
 
 
-@app.route("/test")
-def test():
-    return render_template('test.html')
+@app.route("/header")
+def renderHeader():
+    return render_template("header.html")
+
+
+@app.route("/footer")
+def renderFooter():
+    return render_template("footer.html")
