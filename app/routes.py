@@ -1,13 +1,12 @@
 """ Flask website routes """
-from flask import render_template, request
+from flask import render_template
 from .main import app
 
 
 @app.route("/")
 @app.route("/home")
 def home():
-    user = {'username': 'Jago'}
-    return render_template('home.html', title='Home', user=user)
+    return render_template('home.html')
 
 
 @app.route("/locations")

@@ -24,9 +24,14 @@
 <body>
   <div id="header"></div>
   <main>
-    <p> Home page! </p>
+    <p id='text'> Home page! </p>
   </main>
   <div id="footer"></div>
+  <script>
+    load(function () {
+      $("#home").removeClass("text-white").addClass("text-secondary");
+    })
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
     crossorigin="anonymous"></script>
