@@ -1,6 +1,6 @@
 function load(callback) {
 	$("#header").load("/header", function () {
-		callback();
+		typeof callback === "function" && callback();
 	});
 	$("#footer").load("/footer");
 }
