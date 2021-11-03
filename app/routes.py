@@ -16,9 +16,9 @@ def locations():
 
 @app.route("/header")
 def renderHeader():
-    return render_template("header.html")
+    return render_template('header.html')
 
 
 @app.route("/footer")
 def renderFooter():
-    return render_template("footer.html")
+    return render_template('footer.html')

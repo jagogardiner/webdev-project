@@ -22,6 +22,8 @@ def login():
 
         current_app.logger.info('Logging in')
         login_user(user, remember=remember)
+        if(user.id == 1):
+            return redirect('/admin')
         return redirect('/member')
 
     # or:
@@ -54,14 +56,24 @@ def signup():
     return render_template('signup.html')
 
 
-@auth.route('/member')
+@auth.route("/member")
 @login_required
 def member_page():
-    return render_template("member.html", name=current_user.email)
+    if(current_user.id == 1):
+        return redirect('/admin')
+    return render_template('member.html', name=current_user.name)
 
 
-@auth.route('/logout')
+@auth.route("/admin")
+@login_required
+def admin_dash():
+    if(current_user.id != 1):
+        return redirect('/member')
+    return render_template('admin.html')
+
+
+@auth.route("/logout")
 @login_required
 def logout():
     logout_user()
-    return render_template("home.html")
+    return render_template('home.html')
