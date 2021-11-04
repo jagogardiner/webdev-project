@@ -1,16 +1,24 @@
+/* Import font: Inter */
 @import url("https://rsms.me/inter/inter.css");
 * {
 	box-sizing: border-box;
 }
 
+/* Take over any font globally */
 html * {
 	font-family: "Inter", sans-serif !important;
 }
 
+main > .container {
+	padding: 60px 15px 0;
+}
+
+/* Styling for the "logo" used across the site, this is just Inter bold */
 .logo {
 	font-size: 25px;
 	font-weight: bold;
 }
+
 .logo-footer {
 	font-size: large;
 	font-weight: bold;
@@ -48,6 +56,21 @@ html * {
 }
 
 .form-signin input[type="password"] {
+	margin-bottom: 10px;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+
+/* Seperate type for signup as they have different radiuses */
+.form-signup input[type="password"] {
+	margin-bottom: -1px;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+.form-signup input[type="text"] {
 	margin-bottom: 10px;
 	border-top-left-radius: 0;
 	border-top-right-radius: 0;

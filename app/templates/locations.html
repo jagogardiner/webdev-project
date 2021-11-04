@@ -11,21 +11,14 @@
     integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
   <link href="../static/css/style.css" rel="stylesheet">
 
-  <!-- jQuery CDN-->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
-  <!-- Render header footer template -->
-  <script src="../static/js/renderTemplate.js"></script>
-
   <title>Locations - Horizon Hotels</title>
 </head>
 
 <body>
   <div id="header"></div>
   <main>
-    <div class="album py-5 bg-light">
-      <div class="container">
+    <div class="container">
+      <div class="album py-5">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-sm-3 g-3">
           <div class="col">
             <div class="card shadow-sm">
@@ -139,12 +132,22 @@
 
   <div id="footer"></div>
 
+  <!-- jQuery CDN-->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+  <!-- Render header footer template -->
+  <script src="../static/js/renderTemplate.js"></script>
+
+  <!-- Bootstrap CDN -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
     crossorigin="anonymous"></script>
+
+  <!-- Load header and footer, make page active -->
   <script>
     load(function () {
-      $("#locations").removeClass("text-white").addClass("text-secondary");
+      $("#locations").addClass("active").attr('href', '#')
     })
   </script>
 </body>
