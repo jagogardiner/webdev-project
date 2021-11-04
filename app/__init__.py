@@ -29,8 +29,6 @@ class ConfigClass(object):
 def create_app():
     app = Flask(__name__)
     app.config.from_object(__name__+'.ConfigClass')
-    app.logger.info(os.environ['SQLALCHEMY_DATABASE_URI'])
-    app.logger.info('Loaded configuration')
     db.init_app(app)
 
     login_manager = LoginManager()

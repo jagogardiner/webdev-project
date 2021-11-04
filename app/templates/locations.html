@@ -17,35 +17,42 @@
 <body>
   <div id="header"></div>
   <main>
-    <div class="container">
+    <div class="container py-5">
       <div class="album py-5">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-sm-3 g-3">
+          {% for hotel in hotels %}
           <div class="col">
             <div class="card shadow-sm">
-              <div id="card1" class="carousel slide" data-bs-ride="true" data-pause="hover">
+              <div id="card{{ hotel.id }}" class="carousel slide" data-bs-ride="true" data-pause="hover">
                 <div class="carousel-inner">
                   <div class="carousel-item card-img-top active">
-                    <img src="../static/images/test-image.jpg" class="d-block w-100" alt="..." />
+                    <img src="../static/images/{{ hotel.city }}/image1.jpg" class="d-block w-100" alt="..." />
                   </div>
                   <div class="carousel-item card-img-top">
-                    <img src="../static/images/test2.jpg" class="d-block w-100" alt="..." />
+                    <img src="../static/images/{{ hotel.city }}/image2.jpg" class="d-block w-100" alt="..." />
                   </div>
                   <div class="carousel-item card-img-top">
-                    <img src="../static/images/test3.jpg" class="d-block w-100" alt="..." />
+                    <img src="../static/images/{{ hotel.city }}/image3.jpg" class="d-block w-100" alt="..." />
                   </div>
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#card1" data-bs-slide="prev">
+                <button class="carousel-control-prev" type="button" data-bs-target="#card{{ hotel.id }}"
+                  data-bs-slide="prev">
                   <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                   <span class="visually-hidden">Previous</span>
                 </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#card1" data-bs-slide="next">
+                <button class="carousel-control-next" type="button" data-bs-target="#card{{ hotel.id }}"
+                  data-bs-slide="next">
                   <span class="carousel-control-next-icon" aria-hidden="true"></span>
                   <span class="visually-hidden">Next</span>
                 </button>
               </div>
               <div class="card-body">
-                <h5 class="card-title">Hotel name</h5>
-                <p class="card-text">Price: £50pp/pn<br />Location: London</p>
+                <h5 class="card-title">{{ hotel.city }}</h5>
+                <p class="card-text">
+                  Off-peak price: £{{ hotel.offPeakPrice }}
+                  <br />Peak price: £{{ hotel.peakPrice }}
+                  <br />Hotel capacity: {{ hotel.capacity }}
+                </p>
                 <div class="d-flex justify-content-between align-items-center">
                   <div class="btn-group">
                     <a href="#" class="btn btn-sm btn-outline-secondary">View details</a>
@@ -55,76 +62,7 @@
               </div>
             </div>
           </div>
-          <div class="col">
-            <div class="card shadow-sm">
-              <div id="card2" class="carousel slide" data-bs-ride="true" data-pause="hover">
-                <div class="carousel-inner">
-                  <div class="carousel-item card-img-top active">
-                    <img src="../static/images/test-image.jpg" class="d-block w-100" alt="..." />
-                  </div>
-                  <div class="carousel-item card-img-top">
-                    <img src="../static/images/test2.jpg" class="d-block w-100" alt="..." />
-                  </div>
-                  <div class="carousel-item card-img-top">
-                    <img src="../static/images/test3.jpg" class="d-block w-100" alt="..." />
-                  </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#card2" data-bs-slide="prev">
-                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#card2" data-bs-slide="next">
-                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Next</span>
-                </button>
-              </div>
-              <div class="card-body">
-                <h5 class="card-title">Hotel name</h5>
-                <p class="card-text">Price: £50pp/pn<br />Location: London</p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="btn-group">
-                    <a href="#" class="btn btn-sm btn-outline-secondary">View details</a>
-                    <a href="#" class="btn btn-sm btn-outline-secondary">Book</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card shadow-sm">
-              <div id="card3" class="carousel slide" data-bs-ride="true" data-pause="hover">
-                <div class="carousel-inner">
-                  <div class="carousel-item card-img-top active">
-                    <img src="../static/images/test-image.jpg" class="d-block w-100" alt="..." />
-                  </div>
-                  <div class="carousel-item card-img-top">
-                    <img src="../static/images/test2.jpg" class="d-block w-100" alt="..." />
-                  </div>
-                  <div class="carousel-item card-img-top">
-                    <img src="../static/images/test3.jpg" class="d-block w-100" alt="..." />
-                  </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#card3" data-bs-slide="prev">
-                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#card3" data-bs-slide="next">
-                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Next</span>
-                </button>
-              </div>
-              <div class="card-body">
-                <h5 class="card-title">Hotel name</h5>
-                <p class="card-text">Price: £50pp/pn<br />Location: London</p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="btn-group">
-                    <a href="#" class="btn btn-sm btn-outline-secondary">View details</a>
-                    <a href="#" class="btn btn-sm btn-outline-secondary">Book</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          {% endfor %}
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 """ Flask website routes """
 from flask import render_template
 from .main import app
+from .model import Hotel
 
 
 @app.route("/")
@@ -11,7 +12,7 @@ def home():
 
 @app.route("/locations")
 def locations():
-    return render_template('locations.html')
+    return render_template('locations.html', hotels=Hotel.query.all())
 
 
 @app.route("/header")
