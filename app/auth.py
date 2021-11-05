@@ -1,10 +1,19 @@
-from flask import Blueprint, render_template, redirect, request, flash, current_app
+from flask import Blueprint, render_template, redirect, request, flash, current_app, url_for
 from flask_login import login_required, login_user, current_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from .model import User
+from .model import User, Hotel
 from app import db
 
 auth = Blueprint('auth', __name__)
+
+
+def redirect_dest(fallback):
+    dest = request.args.get('next')
+    try:
+        dest_url = url_for(dest)
+    except:
+        return redirect(fallback)
+    return redirect(dest_url)
 
 
 @auth.route("/login", methods=['POST', 'GET'])
@@ -24,7 +33,7 @@ def login():
         login_user(user, remember=remember)
         if(user.id == 1):
             return redirect('/admin')
-        return redirect('/member')
+        return redirect_dest(fallback=url_for('home'))
 
     # or:
     return render_template('login.html')
@@ -77,3 +86,10 @@ def admin_dash():
 def logout():
     logout_user()
     return render_template('home.html')
+
+
+@auth.route("/booking/<city>")
+@login_required
+def booking(city):
+    hotel = Hotel.query.filter_by(city=city).first_or_404()
+    return render_template('booking.html', hotel=hotel)
