@@ -3,6 +3,7 @@ from flask_login import login_required, login_user, current_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from .model import User, Hotel
 from app import db
+from functools import wraps
 
 auth = Blueprint('auth', __name__)
 
@@ -10,10 +11,21 @@ auth = Blueprint('auth', __name__)
 def redirect_dest(fallback):
     dest = request.args.get('next')
     try:
-        dest_url = url_for(dest)
+        return redirect(dest)
     except:
         return redirect(fallback)
     return redirect(dest_url)
+
+
+def admin_required(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if current_user.id == 1:
+            return f(*args, **kwargs)
+        else:
+            flash("You need to be an admin to view this page.")
+            return redirect('/')
+    return wrap
 
 
 @auth.route("/login", methods=['POST', 'GET'])
@@ -33,7 +45,7 @@ def login():
         login_user(user, remember=remember)
         if(user.id == 1):
             return redirect('/admin')
-        return redirect_dest(fallback=url_for('home'))
+        return redirect_dest(fallback=url_for('app.home'))
 
     # or:
     return render_template('login.html')

@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from dotenv import load_dotenv
@@ -25,9 +25,14 @@ class ConfigClass(object):
     USER_ENABLE_USERNAME = True    # Enable username authentication
     USER_REQUIRE_RETYPE_PASSWORD = False    # Simplify register form
 
+# Error handler for 404
+def page_not_found(e):
+    return render_template('error.html'), 404
+
 
 def create_app():
     app = Flask(__name__)
+    app.register_error_handler(404, page_not_found)
     app.config.from_object(__name__+'.ConfigClass')
     db.init_app(app)
 

@@ -25,14 +25,17 @@
             <div class="card shadow-sm">
               <div id="card{{ hotel.id }}" class="carousel slide" data-bs-ride="true" data-pause="hover">
                 <div class="carousel-inner">
-                  <div class="carousel-item card-img-top card-img-top-grid active">
-                    <img src="../static/images/{{ hotel.city }}/image1.jpg" class="d-block w-100" alt="..." />
+                  <div class="carousel-item active">
+                    <img src="../static/images/{{ hotel.city }}/image1.jpg" class="d-block card-img-top img-fluid"
+                      alt="..." />
                   </div>
-                  <div class="carousel-item card-img-top card-img-top-grid">
-                    <img src="../static/images/{{ hotel.city }}/image2.jpg" class="d-block w-100" alt="..." />
+                  <div class="carousel-item">
+                    <img src="../static/images/{{ hotel.city }}/image2.jpg" class="d-block card-img-top img-fluid"
+                      alt="..." />
                   </div>
-                  <div class="carousel-item card-img-top card-img-top-grid">
-                    <img src="../static/images/{{ hotel.city }}/image3.jpg" class="d-block w-100" alt="..." />
+                  <div class="carousel-item">
+                    <img src="../static/images/{{ hotel.city }}/image3.jpg" class="d-block card-img-top img-fluid"
+                      alt="..." />
                   </div>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#card{{ hotel.id }}"
@@ -51,7 +54,7 @@
                 <p class="card-text">
                   Off-peak price: £{{ hotel.offPeakPrice }}
                   <br />Peak price: £{{ hotel.peakPrice }}
-                  <br />Hotel capacity: {{ hotel.capacity }}
+                  <br />Hotel capacity: {{ hotel.totalCapacity }}
                 </p>
                 <div class="d-flex justify-content-between align-items-center">
                   <div class="btn-group">
