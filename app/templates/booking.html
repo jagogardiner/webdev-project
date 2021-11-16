@@ -19,8 +19,8 @@
 
     <main role="main">
         <div class="container mt-5">
-            <div class="row row-cols-3">
-                <div class="col-lg-8">
+            <div class="row row-cols-2">
+                <div class="col-lg-6">
                     <div id="hotelOverview" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-inner" role="listbox">
                             <div class="carousel-item active">
@@ -61,12 +61,16 @@
                                 <option value="double">Double room</option>
                                 <option value="family">Family room</option>
                             </select>
-                            <p class="mt-3">Booking start:</p>
-                            <input type="date" class="border-1" id="startDate" name="trip-start">
-                            <!-- Script to set date picker to today's date. -->
-                            <script>
-                                document.getElementById('startDate').valueAsDate = new Date();
-                            </script>
+                            <div class="input-group mt-3">
+                                <span class="input-group-text">Booking start</span>
+                                <input type="date" class="form-control" id="startDate" name="trip-start"
+                                    min="2021-01-01">
+                                <span class="input-group-text">Booking end</span>
+                                <input type="date" class="form-control" id="endDate" name="trip-end" min="2021-01-01">
+                            </div>
+                            <label for="customRange2" class="form-label">Example range</label>
+                            <input type="range" class="form-range" min="0" max="5" id="customRange2">
+                            <input type="submit">
                         </form>
                     </div>
                 </div>
@@ -91,6 +95,16 @@
 
     <!-- Load header and footer -->
     <script>load()</script>
+
+    <!-- Script to set date picker to today's date, and dynamically update end date minimum value. -->
+    <script>
+        $("#startDate").attr('min', new Date().toISOString().split("T")[0]); //split into ISO readable format for min attr
+        $("#startDate").on('change', function () { // on change:
+            var startVal = $("#startDate").val() // get startDate's value
+            $("#endDate").val(startVal); // set end date value to the same date as start date
+            $("#endDate").attr('min', startVal); // set minimum value to same date as start date
+        })
+    </script>
 </body>
 
 </html>
