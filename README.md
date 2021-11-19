@@ -10,7 +10,8 @@ Suggested:
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-flask run```
+flask run
+```
 
 Can be ran outside of a virtual environment, however, will install lots of flask requirements to your system.
 
