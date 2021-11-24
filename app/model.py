@@ -1,6 +1,5 @@
 from . import db
 from flask_login import UserMixin
-from functools import wraps
 
 
 class User(db.Model, UserMixin):
@@ -28,3 +27,6 @@ class Hotel(db.Model):
 class Booking(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     hotel_id = db.Column(db.Integer, db.ForeignKey('hotel.id'))
+    guests = db.Column(db.Integer)
+    start_date = db.Column(db.DateTime)
+    end_date = db.Column(db.DateTime)

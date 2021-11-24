@@ -18,9 +18,9 @@
     <div id="header"></div>
 
     <main role="main">
-        <div class="container mt-5">
-            <div class="row row-cols-2">
-                <div class="col-lg-6">
+        <div class="container">
+            <div class="row row-cols-1 row-cols-xl-2">
+                <div class="col mb-3">
                     <div id="hotelOverview" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-inner" role="listbox">
                             <div class="carousel-item active">
@@ -48,41 +48,56 @@
                         </button>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col">
-                        <h3>{{ hotel.city }}</h3>
-                        <p>
-                            This is a generic hotel description.<br>
-                        </p>
-                        <form method="POST">
-                            <div class="input-group mt-3">
-                                <span class="input-group-text">Room type</span>
-                                <select id="roomType" class="form-select" aria-label="Room type">
-                                    <option value="standard">Standard room</option>
-                                    <option value="double">Double room</option>
-                                    <option value="family">Family room</option>
-                                </select>
+                <div class="col d-flex flex-column">
+                    <h3>{{ hotel.city }}</h3>
+                    <p>
+                        This is a generic hotel description.<br>
+                    </p>
+                    <form id="bookingForm" name="bookingForm" method="POST" role="form"
+                        action="/booking/{{ hotel.city }}">
+                        <div class="input-group">
+                            <span class="input-group-text">Room type</span>
+                            <select name="roomType" id="roomType" class="form-select" aria-label="Room type">
+                                <option value="standard">Standard room</option>
+                                <option value="double">Double room</option>
+                                <option value="family">Family room</option>
+                            </select>
+                        </div>
+                        <div class="row mt-1 row-cols-1 row-cols-md-2 g-2">
+                            <div class="col">
+                                <div class="input-group">
+                                    <span class="input-group-text">Booking start</span>
+                                    <input type="date" name="startDate" class="form-control" id="startDate"
+                                        name="trip-start" min="2021-01-01">
+                                </div>
                             </div>
-                            <div class="input-group mt-4">
-                                <span class="input-group-text">Booking start</span>
-                                <input type="date" class="form-control" id="startDate" name="trip-start"
-                                    min="2021-01-01">
-                                <span class="input-group-text">Booking end</span>
-                                <input type="date" class="form-control" id="endDate" name="trip-end" min="2021-01-01">
+                            <div class="col">
+                                <div class="input-group">
+                                    <span class="input-group-text">Booking end</span>
+                                    <input type="date" name="endDate" class="form-control" id="endDate" name="trip-end"
+                                        min="2021-01-01">
+                                </div>
                             </div>
-                            <div class="input-group mt-4">
-                                <span class="input-group-text">Amount of guests</span>
-                                <select id="guestAmount" class="form-select" aria-label="Amount of guests">
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                </select>
-                            </div>
-                        </form>
+                        </div>
+                        <div class="input-group mt-2">
+                            <span class="input-group-text">Amount of guests</span>
+                            <!-- Default to 1 and disable as default room is 'standard' -->
+                            <select id="guestAmount" name="guestAmount" class="form-select"
+                                aria-label="Amount of guests">
+                                <option value='1'>1</option>
+                            </select>
+                        </div>
+                    </form>
+                    <div class="text-bottom mt-auto mb-3">
+                        <p id="roomPricePerNight" class="h6">Room price p/n: </p>
+                        <p id="roomPriceTotal" class="h6">0 nights: </p>
+                        <p id="roomPriceDiscount" class="h6">Advance booking discount: </p>
+                        <p id="priceTotal" class="h4">Full total: </p>
+                        <button id="bookHotelBtn" class="btn mt-3 btn-primary w-100" form="bookingForm" type="submit">
+                            Pay and book hotel</button>
                     </div>
                 </div>
             </div>
-        </div>
         </div>
     </main>
 
@@ -95,35 +110,25 @@
     <!-- Render header footer template -->
     <script src="../static/js/renderTemplate.js"></script>
 
+    <!-- Booking site script -->
+    <script src='../static/js/booking.js'></script>
+
     <!-- Bootstrap CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
 
     <!-- Load header and footer -->
-    <script>load()</script>
-
     <!-- Script to set date picker to today's date, and dynamically update end date minimum value. -->
+    <!-- TODO: Refactor script -->
     <script>
-        $("#startDate").attr('min', new Date().toISOString().split("T")[0]); //split into ISO readable format for min attr
-        $("#startDate").on('change', function () { // on change:
-            var startVal = $("#startDate").val() // get startDate's value
-            $("#endDate").val(startVal); // set end date value to the same date as start date
-            $("#endDate").attr('min', startVal); // set minimum value to same date as start date
-        })
-
-        $("#guestAmount").on('change', function () {
-            console.log('Changed option value ' + this.value);
-
-            if (this.value == "standard") {
-                console.log(this.value)
-            }
-            // $('#guestAmount').append($('<option>', {
-            //     value: 1,
-            //     text: 'My option'
-            // }));
-        })
+        load()
+        // Set event listener for form change - on change, recalculate prices.
+        $("#bookingForm").change(function () {
+            calculateBookingCost({{ hotel.peakPrice }}, {{ hotel.offPeakPrice }})
+        });
     </script>
+
 </body>
 
 </html>

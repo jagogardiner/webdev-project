@@ -4,6 +4,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from .model import User, Hotel
 from app import db
 from functools import wraps
+import logging
+
 
 auth = Blueprint('auth', __name__)
 
@@ -100,8 +102,19 @@ def logout():
     return render_template('home.html')
 
 
-@auth.route("/booking/<city>")
+@auth.route("/booking/<city>", methods=['POST', 'GET'])
 @login_required
 def booking(city):
     hotel = Hotel.query.filter_by(city=city).first_or_404()
+    if request.method == 'POST':
+        roomType = request.args.get('roomType')
+        startDate = request.args.get('startDate')
+        endDate = request.args.get('endDate')
+        guestAmount = request.args.get('guestAmount')
+        priceTotal = request.args.get('priceTotal')
+
+        current_app.logger.info('Hi:)')
+
+        return render_template('booking.html', hotel=hotel)
+
     return render_template('booking.html', hotel=hotel)

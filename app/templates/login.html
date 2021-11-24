@@ -14,17 +14,17 @@
   <title>Login - Horizon Hotels</title>
 </head>
 
-<body class="text-center">
+<body>
   <div id="header"></div>
-  {% with messages = get_flashed_messages() %}
-  {% if messages %}
-  <div class="notification is-danger">
-    {{ messages[0] }}
-  </div>
-  {% endif %}
-  {% endwith %}
   <main class="form-signin">
-    <div class="container">
+    <div class="container text-center">
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <div class="alert alert-danger">
+        {{ messages[0] }}
+      </div>
+      {% endif %}
+      {% endwith %}
       <form method="POST">
         <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
         <div class="form-floating">
