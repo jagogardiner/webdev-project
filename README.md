@@ -16,6 +16,7 @@ flask run
 Can be ran outside of a virtual environment, however, will install lots of flask requirements to your system.
 
 # Current to-do/bugs:
+
 - Website does crash on /locations without MySQL connection to valid database
 - Booking is not fully implemented
 - Administrator dashboard is not implemented
