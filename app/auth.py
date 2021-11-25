@@ -1,11 +1,10 @@
-from flask import Blueprint, render_template, redirect, request, flash, current_app, url_for
+from flask import Blueprint, render_template, redirect, request, flash, current_app, url_for, abort
 from flask_login import login_required, login_user, current_user, logout_user
+from sqlalchemy.orm.session import Session
 from werkzeug.security import generate_password_hash, check_password_hash
-from .model import User, Hotel
+from .model import User, Hotel, Booking
 from app import db
 from functools import wraps
-import logging
-
 
 auth = Blueprint('auth', __name__)
 
@@ -16,7 +15,6 @@ def redirect_dest(fallback):
         return redirect(dest)
     except:
         return redirect(fallback)
-    return redirect(dest_url)
 
 
 def admin_required(f):
@@ -89,9 +87,8 @@ def member_page():
 
 @auth.route("/admin")
 @login_required
+@admin_required
 def admin_dash():
-    if(current_user.id != 1):
-        return redirect('/member')
     return render_template('admin.html')
 
 
@@ -107,14 +104,39 @@ def logout():
 def booking(city):
     hotel = Hotel.query.filter_by(city=city).first_or_404()
     if request.method == 'POST':
-        roomType = request.args.get('roomType')
-        startDate = request.args.get('startDate')
-        endDate = request.args.get('endDate')
-        guestAmount = request.args.get('guestAmount')
-        priceTotal = request.args.get('priceTotal')
+        roomType = request.form.get('roomType')
+        startDate = request.form.get('startDate')
+        endDate = request.form.get('endDate')
+        guestAmount = request.form.get('guestAmount')
+        price = request.form.get('inputTotalCost')
+        transactionDate = request.form.get('transactionDate')
 
-        current_app.logger.info('Hi:)')
+        currentHotel = db.session.query(
+            Hotel).filter(Hotel.city == city).first()
+        userId = current_user.id
 
-        return render_template('booking.html', hotel=hotel)
+        new_booking = Booking(room_type=roomType, start_date=startDate, end_date=endDate, guests=guestAmount,
+                              hotel_id=currentHotel.id, user_id=userId, price_pn=price, transaction_date=transactionDate)
+
+        # Add booking data to DB session
+        db.session.add(new_booking)
+        db.session.commit()
+
+        return url_for('auth.successBooking', bookingId=new_booking.id)
 
     return render_template('booking.html', hotel=hotel)
+
+
+@auth.route("/bookingSuccess/<bookingId>")
+@login_required
+def successBooking(bookingId):
+    # Get booking details from ID.
+    booking = Booking.query.filter_by(id=int(bookingId)).first()
+    if(booking.user_id != current_user.id):
+        # Abort if logged in user is mot the user assigned to the booking.
+        abort(403)
+    # Join Hotel object from Booking.
+    hotel = db.session.query(Hotel).filter(
+        Hotel.id == booking.hotel_id).first()
+
+    return render_template('bookingSuccess.html', booking=booking, hotel=hotel)

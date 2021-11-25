@@ -87,14 +87,29 @@
                                 <option value='1'>1</option>
                             </select>
                         </div>
+                        <input type="hidden" name="totalCost" id="inputTotalCost" value="0" />
+                        <input type="hidden" name="transactionDate" id="transactionDate" value="0" />
                     </form>
                     <div class="text-bottom mt-auto mb-3">
-                        <p id="roomPricePerNight" class="h6">Room price p/n: </p>
-                        <p id="roomPriceTotal" class="h6">0 nights: </p>
-                        <p id="roomPriceDiscount" class="h6">Advance booking discount: </p>
-                        <p id="priceTotal" class="h4">Full total: </p>
+                        <p id="roomPricePerNight" class="h6"></p>
+                        <p id="roomPriceTotal" class="h6"></p>
+                        <p id="roomPriceDiscount" class="h6"></p>
+                        <p id="priceTotal" class="h4"></p>
                         <button id="bookHotelBtn" class="btn mt-3 btn-primary w-100" form="bookingForm" type="submit">
                             Pay and book hotel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="bookingSuccessModal" data-bs-backdrop="static" data-bs-keyboard="false"
+            tabindex="-1" aria-labelledby="bookingSuccessModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="bookingSuccessModalTitle">Booking in progress.</h5>
+                    </div>
+                    <div class="modal-body">
                     </div>
                 </div>
             </div>
@@ -108,7 +123,7 @@
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
     <!-- Render header footer template -->
-    <script src="../static/js/renderTemplate.js"></script>
+    <script src="../static/js/tools.js"></script>
 
     <!-- Booking site script -->
     <script src='../static/js/booking.js'></script>
@@ -122,11 +137,29 @@
     <!-- Script to set date picker to today's date, and dynamically update end date minimum value. -->
     <!-- TODO: Refactor script -->
     <script>
-        load()
+        loadTemplate()
         // Set event listener for form change - on change, recalculate prices.
-        $("#bookingForm").change(function () {
-            calculateBookingCost({{ hotel.peakPrice }}, {{ hotel.offPeakPrice }})
-        });
+        // Trigger the change event right away.
+        $("#bookingForm").on("change", function () {
+            let costs = calculateBookingCosts({{ hotel.peakPrice }}, // peak price from Hotel class
+            {{ hotel.offPeakPrice }}, // off peak price from Hotel class
+            $("#startDate").val(), // date from startDate date input
+            $("#endDate").val(), // date from endDate date input
+            $("roomType").val()) // string from selected roomType input
+
+
+        // Set all information from object "costs" returned from calculateBookingCosts
+        if (costs.nights == 1) {
+            $("#roomPriceTotal").text(costs.nights + " night: £" + costs.roomTotal);
+        } else {
+            $("#roomPriceTotal").text(costs.nights + " nights: £" + costs.roomTotal);
+        }
+        $("#roomPricePerNight").text("Room price: £" + costs.pricePn.toFixed(2) + " p/n");
+        $("#inputTotalCost").val(costs.pricePn.toFixed());
+        $("#roomPriceDiscount").text("Advance booking discount: -£" + costs.discount);
+        $("#priceTotal").text("Full total: £" + costs.totalCost);
+
+        }).trigger("change");
     </script>
 
 </body>

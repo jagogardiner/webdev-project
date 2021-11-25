@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template
+from flask import Flask, render_template, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from dotenv import load_dotenv
@@ -26,13 +26,22 @@ class ConfigClass(object):
     USER_REQUIRE_RETYPE_PASSWORD = False    # Simplify register form
 
 # Error handler for 404
+
+
 def page_not_found(e):
     return render_template('error.html'), 404
+
+
+def not_authorized(e):
+    flash('You are not authorized to view this page.')
+    return render_template('home.html'), 403
 
 
 def create_app():
     app = Flask(__name__)
     app.register_error_handler(404, page_not_found)
+    app.register_error_handler(403, not_authorized)
+
     app.config.from_object(__name__+'.ConfigClass')
     db.init_app(app)
 
