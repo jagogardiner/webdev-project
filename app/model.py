@@ -39,3 +39,5 @@ class Booking(db.Model):
     end_date = db.Column(db.Date)
     price_pn = db.Column(db.Integer)
     transaction_date = db.Column(db.Date)
+    booking_reference = db.Column(db.String(20))
+    hotel = db.relationship("Hotel")

@@ -5,6 +5,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from .model import User, Hotel, Booking
 from app import db
 from functools import wraps
+from datetime import date
+import os
+import base64
 
 auth = Blueprint('auth', __name__)
 
@@ -82,7 +85,16 @@ def signup():
 def member_page():
     if(current_user.id == 1):
         return redirect('/admin')
-    return render_template('member.html', name=current_user.name)
+
+    # Get a list of future user bookings
+    future_bookings = db.session.query(Booking).join(
+        Hotel, Hotel.id == Booking.hotel_id).filter(User.id == Booking.user_id).filter(Booking.start_date >= date.today()).all()
+
+    # Get a list of expired user bookings
+    exp_bookings = db.session.query(Booking).join(
+        Hotel, Hotel.id == Booking.hotel_id).filter(User.id == Booking.user_id).filter(Booking.start_date < date.today()).all()
+
+    return render_template('member.html', user=current_user, future_bookings=future_bookings, exp_bookings=exp_bookings)
 
 
 @auth.route("/admin")
@@ -108,15 +120,19 @@ def booking(city):
         startDate = request.form.get('startDate')
         endDate = request.form.get('endDate')
         guestAmount = request.form.get('guestAmount')
-        price = request.form.get('inputTotalCost')
+        price = request.form.get('totalCost')
         transactionDate = request.form.get('transactionDate')
+
+        # Generate random booking reference
+        bookingReference = base64.urlsafe_b64encode(
+            os.urandom(6)).decode('ascii').upper()
 
         currentHotel = db.session.query(
             Hotel).filter(Hotel.city == city).first()
         userId = current_user.id
 
-        new_booking = Booking(room_type=roomType, start_date=startDate, end_date=endDate, guests=guestAmount,
-                              hotel_id=currentHotel.id, user_id=userId, price_pn=price, transaction_date=transactionDate)
+        new_booking = Booking(room_type=roomType, start_date=startDate, end_date=endDate, guests=guestAmount, hotel_id=currentHotel.id,
+                              user_id=userId, price_pn=price, transaction_date=transactionDate, booking_reference=bookingReference)
 
         # Add booking data to DB session
         db.session.add(new_booking)
