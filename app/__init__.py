@@ -24,6 +24,9 @@ class ConfigClass(object):
     USER_ENABLE_EMAIL = False      # Disable email authentication
     USER_ENABLE_USERNAME = True    # Enable username authentication
     USER_REQUIRE_RETYPE_PASSWORD = False    # Simplify register form
+ 
+    # Client directories
+    CLIENT_PDF = "app/static/client/pdf/"
 
 # Error handler for 404
 

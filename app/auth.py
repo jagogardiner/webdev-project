@@ -1,11 +1,14 @@
-from flask import Blueprint, render_template, redirect, request, flash, current_app, url_for, abort
+from flask import Blueprint, render_template, redirect, request, flash, current_app, url_for, abort, send_file
 from flask_login import login_required, login_user, current_user, logout_user
 from sqlalchemy.orm.session import Session
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import send_file
 from .model import User, Hotel, Booking
 from app import db
 from functools import wraps
 from datetime import date
+from app.pdf import Receipt
+from flask import make_response
 import os
 import base64
 
@@ -88,11 +91,11 @@ def member_page():
 
     # Get a list of future user bookings
     future_bookings = db.session.query(Booking).join(
-        Hotel, Hotel.id == Booking.hotel_id).filter(User.id == Booking.user_id).filter(Booking.start_date >= date.today()).all()
+        Hotel, Hotel.id == Booking.hotel_id).filter(current_user.id == Booking.user_id).filter(Booking.start_date >= date.today()).all()
 
     # Get a list of expired user bookings
     exp_bookings = db.session.query(Booking).join(
-        Hotel, Hotel.id == Booking.hotel_id).filter(User.id == Booking.user_id).filter(Booking.start_date < date.today()).all()
+        Hotel, Hotel.id == Booking.hotel_id).filter(current_user.id == Booking.user_id).filter(Booking.start_date < date.today()).all()
 
     return render_template('member.html', user=current_user, future_bookings=future_bookings, exp_bookings=exp_bookings)
 
@@ -156,3 +159,22 @@ def successBooking(bookingId):
         Hotel.id == booking.hotel_id).first()
 
     return render_template('bookingSuccess.html', booking=booking, hotel=hotel)
+
+
+@auth.route("/getInvoice/<bookingId>")
+@login_required
+def getInvoice(bookingId):
+    # Get booking details from ID.
+    booking = Booking.query.filter_by(id=int(bookingId)).first()
+    if(booking.user_id != current_user.id):
+        # Abort if logged in user is mot the user assigned to the booking.
+        abort(403)
+    # Join Hotel object from Booking.
+    hotel = db.session.query(Hotel).filter(
+        Hotel.id == booking.hotel_id).first()
+    receipt = Receipt()
+    pdf = receipt.GeneratePDF(booking=booking, hotel=hotel)
+    path = current_app.config['CLIENT_PDF'] + \
+        booking.booking_reference + '-booking.pdf'
+    pdf.output(path, dest='S')
+    return send_file(path, environ=request.environ, as_attachment=True)

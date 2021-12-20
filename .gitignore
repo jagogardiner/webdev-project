@@ -71,3 +71,7 @@ docs/_build/
 
 # Secrets
 app/.env
+
+# PDF
+*.pdf
+*.mwb
