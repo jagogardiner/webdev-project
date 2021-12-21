@@ -14,15 +14,15 @@ modified on the fly.
  */
 function loadTemplate(callback) {
 	// Load header
-	$('#header').load('/header', () => {
+	$("#header").load("/header", () => {
 		// Make sure we run callback ONLY if it is a type "function".
 		// Callbacks are used here to make elements active.
-		if (typeof callback === 'function') {
+		if (typeof callback === "function") {
 			callback();
 		}
 	});
 	// Load footer
-	$('#footer').load('/footer'); // Footer does not have a callback as we do not modify elements inside the header.
+	$("#footer").load("/footer"); // Footer does not have a callback as we do not modify elements inside the header.
 }
 
 /**
@@ -34,7 +34,7 @@ function loadTemplate(callback) {
 function addDays(date, days) {
 	const result = new Date(date);
 	result.setDate(result.getDate() + days);
-	return result.toISOString().split('T')[0];
+	return result.toISOString().split("T")[0];
 }
 
 /**
@@ -46,7 +46,7 @@ function addDays(date, days) {
 function differenceInDays(date1, date2) {
 	return Math.round(
 		// Subtracting two days gives you time in milliseconds - divide this
-		Math.abs((date1 - date2) / (24 * 60 * 60 * 1000)),
+		Math.abs((date1 - date2) / (24 * 60 * 60 * 1000))
 	);
 }
 
@@ -67,7 +67,7 @@ function calculateBookingCosts(
 	startDate,
 	endDate,
 	roomType,
-	bookingTransactionDate,
+	bookingTransactionDate
 ) {
 	// Make new date object.
 	const bookingStartDate = new Date(startDate);
@@ -88,9 +88,9 @@ function calculateBookingCosts(
 	const beforePricePn = pricePn;
 
 	// If room type is either double or family, add on respective price increase
-	if (roomType === 'double') {
+	if (roomType === "double") {
 		pricePn *= 1.2;
-	} else if (roomType === 'family') {
+	} else if (roomType === "family") {
 		pricePn *= 1.5;
 	}
 
@@ -98,7 +98,8 @@ function calculateBookingCosts(
 	// Rounding and using the absolute brings the total number of
 	// days between the two days, used for calculating the price discount.
 	const nights = differenceInDays(bookingStartDate, bookingEndDate);
-	const diffDays = differenceInDays(bookingStartDate, bookingTransactionDate) + 1;
+	const diffDays =
+		differenceInDays(bookingStartDate, bookingTransactionDate) + 1;
 	// Find the room total from this
 	const roomTotal = (pricePn * nights).toFixed(2);
 
