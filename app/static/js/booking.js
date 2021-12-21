@@ -38,7 +38,7 @@ $('#roomType').on('change', function () {
 				$('<option>', {
 					value: i,
 					text: i,
-				})
+				}),
 			);
 		}
 	} else if (this.value === 'family') {
@@ -47,7 +47,7 @@ $('#roomType').on('change', function () {
 				$('<option>', {
 					value: i,
 					text: i,
-				})
+				}),
 			);
 		}
 	} else {
@@ -55,7 +55,7 @@ $('#roomType').on('change', function () {
 			$('<option>', {
 				value: 1,
 				text: '1',
-			})
+			}),
 		);
 	}
 });

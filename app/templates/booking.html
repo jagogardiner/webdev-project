@@ -9,7 +9,7 @@
 		<link
 			href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
 			rel="stylesheet"
-			integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+			integrity="sha384-, 101BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
 			crossorigin="anonymous"
 		/>
 		<link href="../static/css/style.css" rel="stylesheet" />
@@ -30,7 +30,7 @@
 							data-bs-ride="carousel"
 						>
 							<div class="carousel-inner" role="listbox">
-								<div class="carousel-item active">
+								<div class="carousel-ite, 10m active">
 									<img
 										src="../static/images/{{ hotel.city }}/image1.jpg"
 										class="d-block card-img-top-view img-fluid"
@@ -215,39 +215,48 @@
 		<!-- Script to set date picker to today's date, and dynamically update end date minimum value. -->
 		<!-- TODO: Refactor script -->
 		<script>
+			// eslint-disable-next-line no-undef
 			loadTemplate();
 			// Set event listener for form change - on change, recalculate prices.
 			// Trigger the change event right away.
 			$('#bookingForm')
-				.on('change', function () {
-					let costs = calculateBookingCosts(
-						parseInt('{{ hotel.peakPrice }}'), // peak price from Hotel class
-						parseInt('{{ hotel.offPeakPrice }}'), // off peak price from Hotel class
-						$('#startDate').val(), // date from startDate date input
-						$('#endDate').val(), // date from endDate date input
+				.on('change', () => {
+					// eslint-disable-next-line no-undef
+					const costs = calculateBookingCosts(
+						// eslint-disable-next-line radix
+						parseInt('{{ hotel.peakPrice }}'), // Peak price from Hotel class
+						// eslint-disable-next-line radix
+						parseInt('{{ hotel.offPeakPrice }}'), // Off peak price from Hotel class
+						$('#startDate').val(), // Date from startDate date input
+						$('#endDate').val(), // Date from endDate date input
 						$('#roomType').val(),
-						new Date()
-					); // string from selected roomType input
+						new Date(),
+					); // String from selected roomType input
 
 					// Set all information from object "costs" returned from calculateBookingCosts
-					if (costs.nights == 1) {
+					if (costs.nights === 1) {
 						$('#roomPriceTotal').text(
-							costs.nights + ' night: £' + parseInt(costs.roomTotal).toFixed(2)
+							costs.nights +
+								' night: £' +
+								parseInt(costs.roomTotal, 10).toFixed(2),
 						);
 					} else {
 						$('#roomPriceTotal').text(
-							costs.nights + ' nights: £' + parseInt(costs.roomTotal).toFixed(2)
+							costs.nights +
+								' nights: £' +
+								parseInt(costs.roomTotal, 10).toFixed(2),
 						);
 					}
+
 					$('#roomPriceDiscount').text(
-						'Advance booking discount: -£' + costs.discount.toFixed(2)
+						'Advance booking discount: -£' + costs.discount.toFixed(2),
 					);
 					$('#roomPricePerNight').text(
-						'Room price: £' + costs.pricePn.toFixed(2) + ' p/n'
+						'Room price: £' + costs.pricePn.toFixed(2) + ' p/n',
 					);
-					$('#totalCost').val(parseInt(costs.beforePricePn.toFixed()));
+					$('#totalCost').val(parseInt(costs.beforePricePn.toFixed(), 10));
 					$('#priceTotal').text(
-						'Full total: £' + parseFloat(costs.totalCost).toFixed(2)
+						'Full total: £' + parseFloat(costs.totalCost).toFixed(2),
 					);
 				})
 				.trigger('change');

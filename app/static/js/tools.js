@@ -46,7 +46,7 @@ function addDays(date, days) {
 function differenceInDays(date1, date2) {
 	return Math.round(
 		// Subtracting two days gives you time in milliseconds - divide this
-		Math.abs((date1 - date2) / (24 * 60 * 60 * 1000))
+		Math.abs((date1 - date2) / (24 * 60 * 60 * 1000)),
 	);
 }
 
@@ -67,7 +67,7 @@ function calculateBookingCosts(
 	startDate,
 	endDate,
 	roomType,
-	bookingTransactionDate
+	bookingTransactionDate,
 ) {
 	// Make new date object.
 	const bookingStartDate = new Date(startDate);
