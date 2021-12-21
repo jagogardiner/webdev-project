@@ -75,3 +75,9 @@ app/.env
 # PDF
 *.pdf
 *.mwb
+
+#eslint
+.eslintrc.js
+**/node_modules
+package-lock.json
+package.json

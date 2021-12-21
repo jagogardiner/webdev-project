@@ -16,7 +16,7 @@ class Receipt:
                 "y1": 32.5,
                 "x2": 115.0,
                 "y2": 37.5,
-                "font": "Arial",
+                "font": "Helvetica",
                 "size": 12.0,
                 "bold": 1,
                 "italic": 0,
@@ -42,20 +42,20 @@ class Receipt:
                 "foreground": 0,
                 "background": 0,
                 "align": "I",
-                "text": booking.booking_reference,
+                "text": "*" + booking.booking_reference + "*",
                 "priority": 3,
             },
         ]
 
         pdf = FPDF(format="A4", orientation="portrait")
-        pdf.set_font("Arial", "B", 20)
+        pdf.set_font("Helvetica", "B", 20)
         pdf.add_page()
         pdf.cell(30, 10, "Horizon Hotels")
         pdf.cell(100)
         img = qrcode.make(booking.booking_reference)
         pdf.image(img.get_image(), x=150, y=0, w=50, h=50)
         pdf.ln(20)
-        pdf.set_font("Arial", size=12)
+        pdf.set_font("Helvetica", size=12)
 
         # here we instantiate the template and define the HEADER
         tpl = FlexTemplate(pdf, elements=elements)

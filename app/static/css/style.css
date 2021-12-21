@@ -1,5 +1,6 @@
 /* Import font: Inter */
 @import url("https://rsms.me/inter/inter.css");
+
 * {
   box-sizing: border-box;
 }
@@ -9,7 +10,7 @@ html * {
   font-family: "Inter", sans-serif !important;
 }
 
-main > .container {
+main>.container {
   padding: 60px 20px 0;
 }
 

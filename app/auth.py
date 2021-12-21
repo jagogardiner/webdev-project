@@ -7,20 +7,19 @@ from flask import (
     current_app,
     url_for,
     abort,
-    send_file,
 )
 from flask_login import login_required, login_user, current_user, logout_user
-from sqlalchemy.orm.session import Session
+from werkzeug.exceptions import HTTPException
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import send_file
-from .model import User, Hotel, Booking
 from app import db
 from functools import wraps
 from datetime import date
 from app.pdf import Receipt
-from flask import make_response
+from .model import User, Hotel, Booking
 import random
 import string
+
 
 auth = Blueprint("auth", __name__)
 
@@ -29,7 +28,7 @@ def redirect_dest(fallback):
     dest = request.args.get("next")
     try:
         return redirect(dest)
-    except:
+    except HTTPException:
         return redirect(fallback)
 
 
@@ -81,7 +80,8 @@ def signup():
             flash("Email address already exists!")
             return redirect("/signup")
 
-        # create a new user with the form data. Hash the password so the plaintext version isn't saved.
+        # create a new user with the form data. Hash the password so the plaintext
+        # version isn't saved.
         new_user = User(
             email=email,
             passwordHash=generate_password_hash(password, method="sha256"),
@@ -162,16 +162,16 @@ def booking(city):
             )
         ).upper()
 
-        currentHotel = db.session.query(Hotel).filter(Hotel.city == city).first()
-        userId = current_user.id
+        current_hotel = db.session.query(Hotel).filter(Hotel.city == city).first()
+        user_id = current_user.id
 
         new_booking = Booking(
             room_type=roomType,
             start_date=startDate,
             end_date=endDate,
             guests=guestAmount,
-            hotel_id=currentHotel.id,
-            user_id=userId,
+            hotel_id=current_hotel.id,
+            user_id=user_id,
             price_pn=price,
             transaction_date=transactionDate,
             booking_reference=bookingReference,
