@@ -1,5 +1,5 @@
 /* Import font: Inter */
-@import url("https://rsms.me/inter/inter.css");
+@import url('https://rsms.me/inter/inter.css');
 
 * {
 	box-sizing: border-box;
@@ -7,7 +7,7 @@
 
 /* Take over any font globally */
 html * {
-	font-family: "Inter", sans-serif !important;
+	font-family: 'Inter', sans-serif !important;
 }
 
 main > .container {
@@ -62,20 +62,20 @@ main > .container {
 	z-index: 2;
 }
 
-.form-signin input[type="email"] {
+.form-signin input[type='email'] {
 	margin-bottom: -1px;
 	border-bottom-right-radius: 0;
 	border-bottom-left-radius: 0;
 }
 
-.form-signin input[type="password"] {
+.form-signin input[type='password'] {
 	margin-bottom: 10px;
 	border-top-left-radius: 0;
 	border-top-right-radius: 0;
 }
 
 /* Seperate type for signup as they have different radiuses */
-.form-signup input[type="password"] {
+.form-signup input[type='password'] {
 	margin-bottom: -1px;
 	border-top-left-radius: 0;
 	border-top-right-radius: 0;
@@ -83,7 +83,7 @@ main > .container {
 	border-bottom-left-radius: 0;
 }
 
-.form-signup input[type="text"] {
+.form-signup input[type='text'] {
 	margin-bottom: 10px;
 	border-top-left-radius: 0;
 	border-top-right-radius: 0;

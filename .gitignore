@@ -76,8 +76,9 @@ app/.env
 *.pdf
 *.mwb
 
-#eslint
+#eslint and prettier
 .eslintrc.js
+.prettierrc
 **/node_modules
 package-lock.json
 package.json

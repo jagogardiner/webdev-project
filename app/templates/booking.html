@@ -218,39 +218,39 @@
 			loadTemplate();
 			// Set event listener for form change - on change, recalculate prices.
 			// Trigger the change event right away.
-			$("#bookingForm")
-				.on("change", function () {
+			$('#bookingForm')
+				.on('change', function () {
 					let costs = calculateBookingCosts(
-						parseInt("{{ hotel.peakPrice }}"), // peak price from Hotel class
-						parseInt("{{ hotel.offPeakPrice }}"), // off peak price from Hotel class
-						$("#startDate").val(), // date from startDate date input
-						$("#endDate").val(), // date from endDate date input
-						$("#roomType").val(),
+						parseInt('{{ hotel.peakPrice }}'), // peak price from Hotel class
+						parseInt('{{ hotel.offPeakPrice }}'), // off peak price from Hotel class
+						$('#startDate').val(), // date from startDate date input
+						$('#endDate').val(), // date from endDate date input
+						$('#roomType').val(),
 						new Date()
 					); // string from selected roomType input
 
 					// Set all information from object "costs" returned from calculateBookingCosts
 					if (costs.nights == 1) {
-						$("#roomPriceTotal").text(
-							costs.nights + " night: £" + parseInt(costs.roomTotal).toFixed(2)
+						$('#roomPriceTotal').text(
+							costs.nights + ' night: £' + parseInt(costs.roomTotal).toFixed(2)
 						);
 					} else {
-						$("#roomPriceTotal").text(
-							costs.nights + " nights: £" + parseInt(costs.roomTotal).toFixed(2)
+						$('#roomPriceTotal').text(
+							costs.nights + ' nights: £' + parseInt(costs.roomTotal).toFixed(2)
 						);
 					}
-					$("#roomPriceDiscount").text(
-						"Advance booking discount: -£" + costs.discount.toFixed(2)
+					$('#roomPriceDiscount').text(
+						'Advance booking discount: -£' + costs.discount.toFixed(2)
 					);
-					$("#roomPricePerNight").text(
-						"Room price: £" + costs.pricePn.toFixed(2) + " p/n"
+					$('#roomPricePerNight').text(
+						'Room price: £' + costs.pricePn.toFixed(2) + ' p/n'
 					);
-					$("#totalCost").val(parseInt(costs.beforePricePn.toFixed()));
-					$("#priceTotal").text(
-						"Full total: £" + parseFloat(costs.totalCost).toFixed(2)
+					$('#totalCost').val(parseInt(costs.beforePricePn.toFixed()));
+					$('#priceTotal').text(
+						'Full total: £' + parseFloat(costs.totalCost).toFixed(2)
 					);
 				})
-				.trigger("change");
+				.trigger('change');
 		</script>
 	</body>
 </html>

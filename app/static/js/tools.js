@@ -14,15 +14,15 @@ modified on the fly.
  */
 function loadTemplate(callback) {
 	// Load header
-	$("#header").load("/header", () => {
+	$('#header').load('/header', () => {
 		// Make sure we run callback ONLY if it is a type "function".
 		// Callbacks are used here to make elements active.
-		if (typeof callback === "function") {
+		if (typeof callback === 'function') {
 			callback();
 		}
 	});
 	// Load footer
-	$("#footer").load("/footer"); // Footer does not have a callback as we do not modify elements inside the header.
+	$('#footer').load('/footer'); // Footer does not have a callback as we do not modify elements inside the header.
 }
 
 /**
@@ -34,7 +34,7 @@ function loadTemplate(callback) {
 function addDays(date, days) {
 	const result = new Date(date);
 	result.setDate(result.getDate() + days);
-	return result.toISOString().split("T")[0];
+	return result.toISOString().split('T')[0];
 }
 
 /**
@@ -88,9 +88,9 @@ function calculateBookingCosts(
 	const beforePricePn = pricePn;
 
 	// If room type is either double or family, add on respective price increase
-	if (roomType === "double") {
+	if (roomType === 'double') {
 		pricePn *= 1.2;
-	} else if (roomType === "family") {
+	} else if (roomType === 'family') {
 		pricePn *= 1.5;
 	}
 
