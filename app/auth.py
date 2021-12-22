@@ -12,13 +12,14 @@ from flask_login import login_required, login_user, current_user, logout_user
 from werkzeug.exceptions import HTTPException
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import send_file
-from .model import User, Hotel, Booking
 from app import db
 from functools import wraps
 from datetime import date
 from app.pdf import Receipt
+from .model import User, Hotel, Booking
 import random
 import string
+
 
 auth = Blueprint("auth", __name__)
 
@@ -161,16 +162,16 @@ def booking(city):
             )
         ).upper()
 
-        currentHotel = db.session.query(Hotel).filter(Hotel.city == city).first()
-        userId = current_user.id
+        current_hotel = db.session.query(Hotel).filter(Hotel.city == city).first()
+        user_id = current_user.id
 
         new_booking = Booking(
             room_type=roomType,
             start_date=startDate,
             end_date=endDate,
             guests=guestAmount,
-            hotel_id=currentHotel.id,
-            user_id=userId,
+            hotel_id=current_hotel.id,
+            user_id=user_id,
             price_pn=price,
             transaction_date=transactionDate,
             booking_reference=bookingReference,
