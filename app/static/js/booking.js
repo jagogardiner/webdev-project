@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 $('#bookingForm').submit((e) => {
   e.preventDefault() // Avoid to execute the actual submit of the form.
   // Set date to current date of transaction.
