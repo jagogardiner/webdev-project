@@ -80,8 +80,8 @@ def signup():
             flash("Email address already exists!")
             return redirect("/signup")
 
-        # create a new user with the form data. Hash the password so the plaintext
-        # version isn't saved.
+        # Create a new user with the form data.
+        # Hash the password so the plaintext version isn't saved.
         new_user = User(
             email=email,
             passwordHash=generate_password_hash(password, method="sha256"),
