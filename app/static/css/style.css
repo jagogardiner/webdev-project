@@ -2,89 +2,89 @@
 @import url('https://rsms.me/inter/inter.css');
 
 * {
-	box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 /* Take over any font globally */
 html * {
-	font-family: 'Inter', sans-serif !important;
+  font-family: 'Inter', sans-serif !important;
 }
 
 main > .container {
-	padding: 60px 20px 0;
+  padding: 60px 20px 0;
 }
 
 .navbar {
-	background-color: #ffffff;
-	opacity: 0.95;
-	filter: alpha(opacity=50);
+  background-color: #ffffff;
+  opacity: 0.95;
+  filter: alpha(opacity=50);
 }
 
 /* Styling for the "logo" used across the site, this is just Inter bold */
 .logo {
-	font-size: 25px;
-	font-weight: bold;
+  font-size: 25px;
+  font-weight: bold;
 }
 
 .logo-footer {
-	font-size: large;
-	font-weight: bold;
+  font-size: large;
+  font-weight: bold;
 }
 
 .card-img-top {
-	width: 100%;
-	height: 30vh;
-	object-fit: cover;
+  width: 100%;
+  height: 30vh;
+  object-fit: cover;
 }
 
 .card-img-top-view {
-	width: 100%;
-	height: 70vh;
-	object-fit: cover;
+  width: 100%;
+  height: 70vh;
+  object-fit: cover;
 }
 
 .form-signin {
-	width: 100%;
-	max-width: 330px;
-	padding: 15px;
-	margin: auto;
-	display: flex;
-	align-items: center;
-	padding-top: 40px;
-	padding-bottom: 40px;
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
 }
 
 .form-signin .checkbox {
-	font-weight: 400;
+  font-weight: 400;
 }
 
 .form-signin .form-floating:focus-within {
-	z-index: 2;
+  z-index: 2;
 }
 
 .form-signin input[type='email'] {
-	margin-bottom: -1px;
-	border-bottom-right-radius: 0;
-	border-bottom-left-radius: 0;
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 .form-signin input[type='password'] {
-	margin-bottom: 10px;
-	border-top-left-radius: 0;
-	border-top-right-radius: 0;
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
 
 /* Seperate type for signup as they have different radiuses */
 .form-signup input[type='password'] {
-	margin-bottom: -1px;
-	border-top-left-radius: 0;
-	border-top-right-radius: 0;
-	border-bottom-right-radius: 0;
-	border-bottom-left-radius: 0;
+  margin-bottom: -1px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 .form-signup input[type='text'] {
-	margin-bottom: 10px;
-	border-top-left-radius: 0;
-	border-top-right-radius: 0;
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
