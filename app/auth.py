@@ -7,10 +7,9 @@ from flask import (
     current_app,
     url_for,
     abort,
-    send_file,
 )
 from flask_login import login_required, login_user, current_user, logout_user
-from sqlalchemy.orm.session import Session
+from werkzeug.exceptions import HTTPException
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import send_file
 from .model import User, Hotel, Booking
@@ -18,7 +17,6 @@ from app import db
 from functools import wraps
 from datetime import date
 from app.pdf import Receipt
-from flask import make_response
 import random
 import string
 
@@ -29,7 +27,7 @@ def redirect_dest(fallback):
     dest = request.args.get("next")
     try:
         return redirect(dest)
-    except:
+    except HTTPException:
         return redirect(fallback)
 
 
@@ -81,7 +79,8 @@ def signup():
             flash("Email address already exists!")
             return redirect("/signup")
 
-        # create a new user with the form data. Hash the password so the plaintext version isn't saved.
+        # Create a new user with the form data.
+        # Hash the password so the plaintext version isn't saved.
         new_user = User(
             email=email,
             passwordHash=generate_password_hash(password, method="sha256"),

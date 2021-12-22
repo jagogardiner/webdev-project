@@ -75,3 +75,10 @@ app/.env
 # PDF
 *.pdf
 *.mwb
+
+# Linting
+.prettierrc
+.eslintrc.js
+**/node_modules
+package.json
+package-lock.json
