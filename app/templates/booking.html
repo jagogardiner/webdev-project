@@ -215,17 +215,13 @@
     <!-- Script to set date picker to today's date, and dynamically update end date minimum value. -->
     <!-- TODO: Refactor script -->
     <script>
-      // eslint-disable-next-line no-undef
       loadTemplate()
       // Set event listener for form change - on change, recalculate prices.
       // Trigger the change event right away.
       $('#bookingForm')
         .on('change', () => {
-          // eslint-disable-next-line no-undef
           const costs = calculateBookingCosts(
-            // eslint-disable-next-line radix
             parseInt('{{ hotel.peakPrice }}'), // Peak price from Hotel class
-            // eslint-disable-next-line radix
             parseInt('{{ hotel.offPeakPrice }}'), // Off peak price from Hotel class
             $('#startDate').val(), // Date from startDate date input
             $('#endDate').val(), // Date from endDate date input
