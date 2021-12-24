@@ -98,6 +98,8 @@ class Costs:
         elif booking_advance >= 45:
             self.discount = (self.total) - (self.total * 0.95)
             self.paid = self.total * 0.95
+        else:
+            self.paid = self.total
 
 
 class Receipt(FPDF):
