@@ -90,7 +90,6 @@ def signup():
         # add the new user to the database
         db.session.add(new_user)
         db.session.commit()
-
         return redirect("/login")
 
     return render_template("signup.html")
@@ -99,6 +98,7 @@ def signup():
 @auth.route("/member")
 @login_required
 def member_page():
+    # If the user is admin, don't go to the member booking page.
     if current_user.id == 1:
         return redirect("/admin")
 
@@ -161,16 +161,13 @@ def booking(city):
             )
         ).upper()
 
-        current_hotel = db.session.query(Hotel).filter(Hotel.city == city).first()
-        user_id = current_user.id
-
         new_booking = Booking(
             room_type=roomType,
             start_date=startDate,
             end_date=endDate,
             guests=guestAmount,
-            hotel_id=current_hotel.id,
-            user_id=user_id,
+            hotel_id=hotel.id,
+            user_id=current_user.id,
             price_pn=price,
             transaction_date=transactionDate,
             booking_reference=bookingReference,
