@@ -1,10 +1,10 @@
 """ Flask website routes """
 from datetime import datetime
-from flask import render_template, request, json
+from flask import render_template, request
 from flask.json import jsonify
 from .main import app
 from .model import Hotel, Booking
-from .pdf import Costs
+from .costs import Costs
 
 
 @app.route("/")
