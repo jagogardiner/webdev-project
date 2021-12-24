@@ -11,7 +11,6 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(100), unique=True)
     passwordHash = db.Column(db.String(500))
     name = db.Column(db.String(100))
-    booking = db.relationship("Booking", back_populates="user")
 
 
 class Hotel(db.Model):
@@ -24,7 +23,6 @@ class Hotel(db.Model):
     totalCapacity = db.Column(db.Integer)
     peakPrice = db.Column(db.Integer)
     offPeakPrice = db.Column(db.Integer)
-    booking = db.relationship("Booking", back_populates="hotel")
 
 
 class Booking(db.Model):

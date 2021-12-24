@@ -15,11 +15,10 @@ from werkzeug.utils import send_file
 from app import db
 from functools import wraps
 from datetime import date
-from app.pdf import Receipt
+from .pdf import Receipt
 from .model import User, Hotel, Booking
 import random
 import string
-
 
 auth = Blueprint("auth", __name__)
 
@@ -104,7 +103,7 @@ def member_page():
         return redirect("/admin")
 
     # Get a list of future user bookings
-    future_bookings = (
+    future_bookings: Booking = (
         db.session.query(Booking)
         .join(Hotel, Hotel.id == Booking.hotel_id)
         .filter(current_user.id == Booking.user_id)
@@ -112,8 +111,8 @@ def member_page():
         .all()
     )
 
-    # Get a list of expired user bookings
-    exp_bookings = (
+    # Get a list of expired user bookings as type booking
+    exp_bookings: Booking = (
         db.session.query(Booking)
         .join(Hotel, Hotel.id == Booking.hotel_id)
         .filter(current_user.id == Booking.user_id)
@@ -194,10 +193,8 @@ def successBooking(bookingId):
     if booking.user_id != current_user.id:
         # Abort if logged in user is mot the user assigned to the booking.
         abort(403)
-    # Join Hotel object from Booking.
-    hotel = db.session.query(Hotel).filter(Hotel.id == booking.hotel_id).first()
 
-    return render_template("bookingSuccess.html", booking=booking, hotel=hotel)
+    return render_template("bookingSuccess.html", booking=booking)
 
 
 @auth.route("/getInvoice/<bookingId>")
@@ -208,10 +205,8 @@ def getInvoice(bookingId):
     if booking.user_id != current_user.id:
         # Abort if logged in user is mot the user assigned to the booking.
         abort(403)
-    # Join Hotel object from Booking.
-    hotel = db.session.query(Hotel).filter(Hotel.id == booking.hotel_id).first()
-    receipt = Receipt()
-    pdf = receipt.GeneratePDF(booking=booking, hotel=hotel)
+    receipt = Receipt(booking=booking)
+    pdf = receipt.pdf
     path = current_app.config["CLIENT_PDF"] + booking.booking_reference + "-booking.pdf"
     pdf.output(path, dest="S")
     return send_file(path, environ=request.environ, as_attachment=True)

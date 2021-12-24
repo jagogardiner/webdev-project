@@ -24,12 +24,12 @@
       <div class="container">
         <p class="h5">Thanks for booking with Horizon Hotels!</p>
         <p class="h6">
-          You are staying at: {{ hotel.city }}, from {{ booking.start_date }} to
-          {{ booking.end_date }}.
+          You are staying at: {{ booking.hotel.city }}, from {{
+          booking.start_date }} to {{ booking.end_date }}.
         </p>
         <p class="h6">
           When you arrive at reception, please bring valid ID and quote the
-          booking reference: #{{ booking.booking_reference}}
+          booking reference: #{{ booking.booking_reference }}
         </p>
         <p id="totalPaid"></p>
         <p id="roomPricePerNight"></p>
