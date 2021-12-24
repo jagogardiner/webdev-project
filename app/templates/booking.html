@@ -220,7 +220,6 @@
       // Trigger the change event right away.
       $('#bookingForm')
         .on('change', () => {
-          var costs
           fetch('/api/costs', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -238,31 +237,26 @@
                 return Promise.reject('server')
               }
             })
-            .then((dataJson) => {
-              console.log(typeof dataJson)
-              // costs = JSON.parse(dataJson, function (k, v) {
-              //   return typeof v === 'object' || isNaN(v) ? v : parseInt(v, 10)
-              // })
-              costs = dataJson
+            .then((costs) => {
+              if (costs.nights === 1) {
+                $('#roomPriceTotal').text('1 night: £' + costs.total.toFixed(2))
+              } else {
+                $('#roomPriceTotal').text(
+                  costs.nights + ' nights: £' + costs.total.toFixed(2),
+                )
+              }
+              $('#roomPriceDiscount').text(
+                'Advance booking discount: -£' + costs.discount.toFixed(2),
+              )
+              $('#roomPricePerNight').text(
+                'Room price: £' + costs.price_pn.toFixed(2) + ' p/n',
+              )
+              $('#priceTotal').text('Full total: £' + costs.paid.toFixed(2))
             })
             .catch((err) => {
               if (err === 'server') return
               console.log(err)
             })
-          // Set all information from object "costs" returned from calculateBookingCosts
-          if (costs.nights === 1) {
-            $('#roomPriceTotal').text('1 night: £' + costs.total)
-          } else {
-            $('#roomPriceTotal').text(costs.nights + ' nights: £' + costs.total)
-          }
-
-          $('#roomPriceDiscount').text(
-            'Advance booking discount: -£' + costs.discount,
-          )
-          $('#roomPricePerNight').text(
-            'Room price: £' + costs.price_pn + ' p/n',
-          )
-          $('#priceTotal').text('Full total: £' + costs.paid)
         })
         .trigger('change')
     </script>
