@@ -73,19 +73,16 @@ function calculateBookingCosts(
   const bookingStartDate = new Date(startDate)
   const bookingEndDate = new Date(endDate)
   // Get current month number - JS date does this from 0 - 11
-  const month = bookingStartDate.getMonth()
+  const month = bookingStartDate.getMonth() + 1
   let pricePn
   // If month is from April - September:
-  if (month >= 3 && month <= 9) {
+  if (month >= 4 && month <= 9) {
     // Set price p/n to peak price
     pricePn = peakPrice
   } else {
     // Set price p/n to off-peak price.
     pricePn = offPeakPrice
   }
-
-  // Track price before bedroom adjustment
-  const beforePricePn = pricePn
 
   // If room type is either double or family, add on respective price increase
   if (roomType === 'double') {
@@ -122,7 +119,6 @@ function calculateBookingCosts(
 
   return {
     pricePn,
-    beforePricePn,
     roomTotal,
     totalCost,
     discount,

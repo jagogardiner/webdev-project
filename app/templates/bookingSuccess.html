@@ -65,8 +65,8 @@
     <script>
       loadTemplate()
       let costs = calculateBookingCosts(
-        parseFloat('{{ booking.price_pn }}'),
-        parseFloat('{{ booking.price_pn }}'),
+        parseFloat('{{ booking.hotel.peakPrice }}'),
+        parseFloat('{{ booking.hotel.offPeakPrice }}'),
         '{{ booking.start_date }}',
         '{{ booking.end_date }}',
         '{{ booking.room_type }}',

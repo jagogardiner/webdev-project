@@ -151,7 +151,6 @@ def booking(city):
         startDate = request.form.get("startDate")
         endDate = request.form.get("endDate")
         guestAmount = request.form.get("guestAmount")
-        price = request.form.get("totalCost")
         transactionDate = request.form.get("transactionDate")
 
         # Generate random booking reference
@@ -168,7 +167,6 @@ def booking(city):
             guests=guestAmount,
             hotel_id=hotel.id,
             user_id=current_user.id,
-            price_pn=price,
             transaction_date=transactionDate,
             booking_reference=bookingReference,
         )

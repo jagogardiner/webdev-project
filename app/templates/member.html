@@ -180,33 +180,30 @@
     <!-- Load header and footer, make page active -->
     <script>
       loadTemplate(function () {
-                  $('member-btn').addClass('active').attr('href', '#')
-              })
-              $("a").on("click", function () {
-                  $("#" + $(this).attr('id') + "Modal").modal("show")
-              })
-              {% for booking in future_bookings %}
-              let futureCost{{ booking.id }} = calculateBookingCosts(
-                  '{{ booking.price_pn }}',
-                  '{{ booking.price_pn }}',
-                  '{{ booking.start_date }}',
-                  '{{ booking.end_date }}',
-                  '{{ booking.room_type }}',
-                  '{{ booking.transaction_date }}'
-              )
-              $("#futureBooking{{ booking.id }}Price").text('Total paid: £' + futureCost{{ booking.id }}.totalCost)
-              {% endfor %}
-              {% for booking in exp_bookings %}
-              let expCost{{ booking.id }} = calculateBookingCosts(
-                  '{{ booking.price_pn }}',
-                  '{{ booking.price_pn }}',
-                  '{{ booking.start_date }}',
-                  '{{ booking.end_date }}',
-                  '{{ booking.room_type }}',
-                  '{{ booking.transaction_date }}'
-              )
-              $("#expBooking{{ booking.id }}Price").text('Total paid: £' + expCost{{ booking.id }}.totalCost)
-              {% endfor %}
+        $('member-btn').addClass('active').attr('href', '#')
+      })
+      {% for booking in future_bookings %}
+      let futureCost{{ booking.id }} = calculateBookingCosts(
+        '{{ booking.hotel.peakPrice }}',
+        '{{ booking.hotel.offPeakPrice }}',
+        '{{ booking.start_date }}',
+        '{{ booking.end_date }}',
+        '{{ booking.room_type }}',
+        '{{ booking.transaction_date }}'
+      )
+      $("#futureBooking{{ booking.id }}Price").text('Total paid: £' + futureCost{{ booking.id }}.totalCost)
+      {% endfor %}
+      {% for booking in exp_bookings %}
+      let expCost{{ booking.id }} = calculateBookingCosts(
+        '{{ booking.hotel.peakPrice }}',
+        '{{ booking.hotel.offPeakPrice }}',
+        '{{ booking.start_date }}',
+        '{{ booking.end_date }}',
+        '{{ booking.room_type }}',
+        '{{ booking.transaction_date }}'
+      )
+      $("#expBooking{{ booking.id }}Price").text('Total paid: £' + expCost{{ booking.id }}.totalCost)
+      {% endfor %}
     </script>
   </body>
 </html>
