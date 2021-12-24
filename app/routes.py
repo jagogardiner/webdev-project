@@ -1,7 +1,10 @@
 """ Flask website routes """
-from flask import render_template
+from datetime import datetime
+from flask import render_template, request, json
+from flask.json import jsonify
 from .main import app
-from .model import Hotel
+from .model import Hotel, Booking
+from .pdf import Costs
 
 
 @app.route("/")
@@ -29,3 +32,22 @@ def renderHeader():
 @app.route("/footer")
 def renderFooter():
     return render_template("footer.html")
+
+
+@app.route("/api/costs", methods=["POST"])
+def cost_api():
+    if request.method == "POST":
+        data = request.get_json()
+        new_booking = Booking(
+            room_type=data["room_type"],
+            start_date=datetime.strptime(data["start_date"], "%Y-%m-%d"),
+            end_date=datetime.strptime(data["end_date"], "%Y-%m-%d"),
+            guests=0,
+            hotel_id=data["hotel"],
+            user_id=1,
+            transaction_date=datetime.today(),
+            booking_reference="",
+            hotel=Hotel.query.filter_by(id=data["hotel"]).first_or_404(),
+        )
+        costs = Costs(new_booking)
+        return jsonify(costs.__dict__), 200
