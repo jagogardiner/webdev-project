@@ -1,16 +1,9 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable max-params */
-// Todo: Annotate all functions
-
-/*
-@function load()
-Function to load header and footer using jQuery.
-Uses a callback so elements inside these HTML files can be
-modified on the fly.
-*/
 /**
- *
- * @param {*} callback
+ * Function to load header and footer using jQuery.
+ * Uses a callback so elements inside these HTML files can be
+ * modified on the fly.
+ * @param {Function} callback Callback used to make header elements active.
  */
 function loadTemplate(callback) {
   // Load header
@@ -26,46 +19,55 @@ function loadTemplate(callback) {
 }
 
 /**
+ * Adds a certain amount of days onto a Date object.
  *
- * @param {*} date
- * @param {*} days
- * @returns
+ * @param {Date} date Date to add days onto
+ * @param {Number} days Amount of days to add
+ * @returns date as ISO string
  */
 function addDays(date, days) {
+  // make new Date object from
   const result = new Date(date)
+  // set date in the future with days added on
   result.setDate(result.getDate() + days)
+  // return resulting date in ISO string format
   return result.toISOString().split('T')[0]
 }
 
 /**
+ * Gets the costs for a booking.
  *
- * @param {*} date1
- * @param {*} date2
- * @returns
+ * @param {Number} hotel_id
+ * @param {Date} start_date
+ * @param {Date} end_date
+ * @param {String} room_type
+ * @returns {Promise}
  */
-function differenceInDays(date1, date2) {
-  return Math.round(
-    // Subtracting two days gives you time in milliseconds - divide this
-    Math.abs((date1 - date2) / (24 * 60 * 60 * 1000)),
-  )
-}
-
 async function getCosts(hotel_id, start_date, end_date, room_type) {
+  // Make a fetch request to the API endpoint
   const resp = await fetch('/api/costs', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
+      // Contains the valid information needed for the API endpoint
       hotel_id: hotel_id,
       start_date: start_date,
       end_date: end_date,
       room_type: room_type,
     }),
   })
+  // Recieve the JSON
   return resp.json()
 }
 
+/**
+ * Gets the total paid as for one Booking.
+ *
+ * @returns {Promise}
+ */
 async function getBookingPrices() {
-  const resp = await fetch('/api/bookings', {
+  const resp = await fetch('/api/bookingPrice', {
+    // POST request with no body
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
   })

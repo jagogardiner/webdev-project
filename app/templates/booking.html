@@ -86,7 +86,7 @@
               name="bookingForm"
               method="POST"
               role="form"
-              action="/booking/{{ hotel.city }}"
+              action="/api/newBooking"
             >
               <div class="input-group">
                 <span class="input-group-text">Room type</span>
@@ -141,13 +141,6 @@
                   <option value="1">1</option>
                 </select>
               </div>
-              <input type="hidden" name="totalCost" id="totalCost" value="0" />
-              <input
-                type="hidden"
-                name="transactionDate"
-                id="transactionDate"
-                value="0"
-              />
             </form>
             <div class="text-bottom mt-auto mb-3">
               <p id="roomPricePerNight" class="h6"></p>

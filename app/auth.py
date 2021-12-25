@@ -9,7 +9,6 @@ from flask import (
     abort,
 )
 from flask_login import login_required, login_user, current_user, logout_user
-from flask import jsonify
 from werkzeug.exceptions import HTTPException
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import send_file
@@ -18,9 +17,6 @@ from functools import wraps
 from datetime import date
 from .pdf import Receipt
 from .model import User, Hotel, Booking
-from .costs import Costs
-import random
-import string
 
 auth = Blueprint("auth", __name__)
 
@@ -144,41 +140,10 @@ def logout():
     return render_template("home.html")
 
 
-@auth.route("/booking/<city>", methods=["POST", "GET"])
+@auth.route("/booking/<city>")
 @login_required
 def booking(city):
     hotel = Hotel.query.filter_by(city=city).first_or_404()
-    if request.method == "POST":
-        roomType = request.form.get("roomType")
-        startDate = request.form.get("startDate")
-        endDate = request.form.get("endDate")
-        guestAmount = request.form.get("guestAmount")
-        transactionDate = request.form.get("transactionDate")
-
-        # Generate random booking reference
-        bookingReference = "".join(
-            "".join(
-                random.choice(string.ascii_uppercase + string.digits) for _ in range(8)
-            )
-        ).upper()
-
-        new_booking = Booking(
-            room_type=roomType,
-            start_date=startDate,
-            end_date=endDate,
-            guests=guestAmount,
-            hotel_id=hotel.id,
-            user_id=current_user.id,
-            transaction_date=transactionDate,
-            booking_reference=bookingReference,
-        )
-
-        # Add booking data to DB session
-        db.session.add(new_booking)
-        db.session.commit()
-
-        return url_for("auth.successBooking", bookingId=new_booking.id)
-
     return render_template("booking.html", hotel=hotel)
 
 
@@ -207,19 +172,3 @@ def getInvoice(bookingId):
     path = current_app.config["CLIENT_PDF"] + booking.booking_reference + "-booking.pdf"
     pdf.output(path, dest="S")
     return send_file(path, environ=request.environ, as_attachment=True)
-
-
-@auth.route("/api/bookings", methods=["POST"])
-@login_required
-def bookings_api():
-    bookings = (
-        db.session.query(Booking)
-        .filter(current_user.id == Booking.user_id)
-        .filter(Booking.id)
-        .all()
-    )
-    dict = {}
-    for row in bookings:
-        cost = Costs(row)
-        dict[row.__dict__["id"]] = cost.paid
-    return jsonify(dict)

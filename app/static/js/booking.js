@@ -6,7 +6,7 @@ $('#bookingForm').submit((e) => {
   $('#bookingSuccessModal').modal('show')
   $.ajax({
     type: 'POST',
-    url: $(document).url,
+    url: '/api/newBooking',
     data: $('#bookingForm').serialize(), // Serializes the form's elements.
     success(data) {
       // Call 200 and set window location to booking page + booking ID
@@ -27,7 +27,7 @@ $('#startDate').on('change', () => {
   $('#endDate').attr('min', addDays(startVal, 1)) // Set minimum value to same date as start date, plus one
 })
 $('#startDate').val(todayDate).trigger('change')
-
+// TODO: Annotate and document
 $('#roomType').on('change', function () {
   $('#guestAmount').empty()
   $('#guestAmount').removeAttr('disabled')
