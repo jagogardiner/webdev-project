@@ -50,78 +50,24 @@ function differenceInDays(date1, date2) {
   )
 }
 
-/**
- *
- *
- * @param {*} peakPrice
- * @param {*} offPeakPrice
- * @param {*} startDate
- * @param {*} endDate
- * @param {*} roomType
- * @param {*} [bookingTransactionDate=new Date()]
- * @return {*}
- */
-function calculateBookingCosts(
-  peakPrice,
-  offPeakPrice,
-  startDate,
-  endDate,
-  roomType,
-  bookingTransactionDate,
-) {
-  // Make new date object.
-  const bookingStartDate = new Date(startDate)
-  const bookingEndDate = new Date(endDate)
-  // Get current month number - JS date does this from 0 - 11
-  const month = bookingStartDate.getMonth() + 1
-  let pricePn
-  // If month is from April - September:
-  if (month >= 4 && month <= 9) {
-    // Set price p/n to peak price
-    pricePn = peakPrice
-  } else {
-    // Set price p/n to off-peak price.
-    pricePn = offPeakPrice
-  }
+async function getCosts(hotel_id, start_date, end_date, room_type) {
+  const resp = await fetch('/api/costs', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      hotel_id: hotel_id,
+      start_date: start_date,
+      end_date: end_date,
+      room_type: room_type,
+    }),
+  })
+  return resp.json()
+}
 
-  // If room type is either double or family, add on respective price increase
-  if (roomType === 'double') {
-    pricePn *= 1.2
-  } else if (roomType === 'family') {
-    pricePn *= 1.5
-  }
-
-  // Find the difference in days.
-  // Rounding and using the absolute brings the total number of
-  // days between the two days, used for calculating the price discount.
-  const nights = differenceInDays(bookingStartDate, bookingEndDate)
-  const diffDays =
-    differenceInDays(bookingStartDate, bookingTransactionDate) + 1
-  // Find the room total from this
-  const roomTotal = (pricePn * nights).toFixed(2)
-
-  // Calculate the discount for booking in advance.
-  let discount = 0
-  let totalCost = roomTotal
-  if (diffDays >= 80) {
-    discount = totalCost
-    totalCost *= 0.8
-    discount -= totalCost
-  } else if (diffDays >= 60) {
-    discount = totalCost
-    totalCost *= 0.9
-    discount -= totalCost
-  } else if (diffDays >= 45) {
-    discount = totalCost
-    totalCost *= 0.95
-    discount -= totalCost
-  }
-
-  return {
-    pricePn,
-    roomTotal,
-    totalCost,
-    discount,
-    nights,
-  }
+async function getBookingPrices() {
+  const resp = await fetch('/api/bookings', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+  })
+  return resp.json()
 }

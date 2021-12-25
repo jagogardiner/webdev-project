@@ -64,33 +64,28 @@
     <!-- Load header and footer -->
     <script>
       loadTemplate()
-      let costs = calculateBookingCosts(
-        parseFloat('{{ booking.hotel.peakPrice }}'),
-        parseFloat('{{ booking.hotel.offPeakPrice }}'),
+      // eslint-disable-next-line no-undef
+      getCosts(
+        '{{ booking.hotel.id }}',
         '{{ booking.start_date }}',
         '{{ booking.end_date }}',
         '{{ booking.room_type }}',
-        new Date('{{ booking.transaction_date }}'),
-      )
-      console.log(costs)
-      if (costs.nights == 1) {
-        $('#roomPriceTotal').text(
-          costs.nights + ' night: £' + parseInt(costs.roomTotal).toFixed(2),
+      ).then((costs) => {
+        if (costs.nights === 1) {
+          $('#roomPriceTotal').text('1 night: £' + costs.total.toFixed(2))
+        } else {
+          $('#roomPriceTotal').text(
+            costs.nights + ' nights: £' + costs.total.toFixed(2),
+          )
+        }
+        $('#roomPriceDiscount').text(
+          'Advance booking discount: -£' + costs.discount.toFixed(2),
         )
-      } else {
-        $('#roomPriceTotal').text(
-          costs.nights + ' nights: £' + parseInt(costs.roomTotal).toFixed(2),
+        $('#roomPricePerNight').text(
+          'Room price: £' + costs.price_pn.toFixed(2) + ' p/n',
         )
-      }
-      $('#roomPriceDiscount').text(
-        'Advance booking discount: -£' + costs.discount.toFixed(2),
-      )
-      $('#roomPricePerNight').text(
-        'Room price: £' + costs.pricePn.toFixed(2) + ' p/n',
-      )
-      $('#priceTotal').text(
-        'Full total: £' + parseFloat(costs.totalCost).toFixed(2),
-      )
+        $('#priceTotal').text('Full total: £' + costs.paid.toFixed(2))
+      })
     </script>
   </body>
 </html>

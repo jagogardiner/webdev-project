@@ -220,43 +220,28 @@
       // Trigger the change event right away.
       $('#bookingForm')
         .on('change', () => {
-          fetch('/api/costs', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              hotel: '{{ hotel.id }}',
-              start_date: $('#startDate').val(),
-              end_date: $('#endDate').val(),
-              room_type: $('#roomType').val(),
-            }),
+          // eslint-disable-next-line no-undef
+          getCosts(
+            '{{ hotel.id }}',
+            $('#startDate').val(),
+            $('#endDate').val(),
+            $('#roomType').val(),
+          ).then((costs) => {
+            if (costs.nights === 1) {
+              $('#roomPriceTotal').text('1 night: £' + costs.total.toFixed(2))
+            } else {
+              $('#roomPriceTotal').text(
+                costs.nights + ' nights: £' + costs.total.toFixed(2),
+              )
+            }
+            $('#roomPriceDiscount').text(
+              'Advance booking discount: -£' + costs.discount.toFixed(2),
+            )
+            $('#roomPricePerNight').text(
+              'Room price: £' + costs.price_pn.toFixed(2) + ' p/n',
+            )
+            $('#priceTotal').text('Full total: £' + costs.paid.toFixed(2))
           })
-            .then((resp) => {
-              if (resp.status === 200) {
-                return resp.json()
-              } else {
-                return Promise.reject('server')
-              }
-            })
-            .then((costs) => {
-              if (costs.nights === 1) {
-                $('#roomPriceTotal').text('1 night: £' + costs.total.toFixed(2))
-              } else {
-                $('#roomPriceTotal').text(
-                  costs.nights + ' nights: £' + costs.total.toFixed(2),
-                )
-              }
-              $('#roomPriceDiscount').text(
-                'Advance booking discount: -£' + costs.discount.toFixed(2),
-              )
-              $('#roomPricePerNight').text(
-                'Room price: £' + costs.price_pn.toFixed(2) + ' p/n',
-              )
-              $('#priceTotal').text('Full total: £' + costs.paid.toFixed(2))
-            })
-            .catch((err) => {
-              if (err === 'server') return
-              console.log(err)
-            })
         })
         .trigger('change')
     </script>

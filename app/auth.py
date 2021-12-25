@@ -9,6 +9,7 @@ from flask import (
     abort,
 )
 from flask_login import login_required, login_user, current_user, logout_user
+from flask import jsonify
 from werkzeug.exceptions import HTTPException
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import send_file
@@ -17,6 +18,7 @@ from functools import wraps
 from datetime import date
 from .pdf import Receipt
 from .model import User, Hotel, Booking
+from .costs import Costs
 import random
 import string
 
@@ -205,3 +207,19 @@ def getInvoice(bookingId):
     path = current_app.config["CLIENT_PDF"] + booking.booking_reference + "-booking.pdf"
     pdf.output(path, dest="S")
     return send_file(path, environ=request.environ, as_attachment=True)
+
+
+@auth.route("/api/bookings", methods=["POST"])
+@login_required
+def bookings_api():
+    bookings = (
+        db.session.query(Booking)
+        .filter(current_user.id == Booking.user_id)
+        .filter(Booking.id)
+        .all()
+    )
+    dict = {}
+    for row in bookings:
+        cost = Costs(row)
+        dict[row.__dict__["id"]] = cost.paid
+    return jsonify(dict)

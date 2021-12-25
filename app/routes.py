@@ -36,18 +36,17 @@ def renderFooter():
 
 @app.route("/api/costs", methods=["POST"])
 def cost_api():
-    if request.method == "POST":
-        data = request.get_json()
-        new_booking = Booking(
-            room_type=data["room_type"],
-            start_date=datetime.strptime(data["start_date"], "%Y-%m-%d"),
-            end_date=datetime.strptime(data["end_date"], "%Y-%m-%d"),
-            guests=0,
-            hotel_id=data["hotel"],
-            user_id=1,
-            transaction_date=datetime.today(),
-            booking_reference="",
-            hotel=Hotel.query.filter_by(id=data["hotel"]).first_or_404(),
-        )
-        costs = Costs(new_booking)
-        return jsonify(costs.__dict__), 200
+    data = request.get_json()
+    new_booking = Booking(
+        room_type=data["room_type"],
+        start_date=datetime.strptime(data["start_date"], "%Y-%m-%d"),
+        end_date=datetime.strptime(data["end_date"], "%Y-%m-%d"),
+        guests=0,
+        hotel_id=data["hotel_id"],
+        user_id=1,
+        transaction_date=datetime.today(),
+        booking_reference="",
+        hotel=Hotel.query.filter_by(id=data["hotel_id"]).first_or_404(),
+    )
+    costs = Costs(new_booking)
+    return jsonify(costs.__dict__), 200

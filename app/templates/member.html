@@ -97,10 +97,7 @@
                 <li class="list-group-item">
                   <b>Check-out date:</b> {{ booking.end_date }}
                 </li>
-                <li
-                  class="list-group-item"
-                  id="futureBooking{{ booking.id }}Price"
-                >
+                <li class="list-group-item" id="{{ booking.id }}Price">
                   <b>Total price paid:</b> {{ booking.price_pn }}
                 </li>
               </ul>
@@ -136,10 +133,7 @@
                 <li class="list-group-item">
                   <b>Check-out date:</b> {{ booking.end_date }}
                 </li>
-                <li
-                  class="list-group-item"
-                  id="expBooking{{ booking.id }}Price"
-                >
+                <li class="list-group-item" id="{{ booking.id }}Price">
                   <b>Total price paid:</b> {{ booking.price_pn }}
                 </li>
               </ul>
@@ -182,28 +176,12 @@
       loadTemplate(function () {
         $('member-btn').addClass('active').attr('href', '#')
       })
-      {% for booking in future_bookings %}
-      let futureCost{{ booking.id }} = calculateBookingCosts(
-        '{{ booking.hotel.peakPrice }}',
-        '{{ booking.hotel.offPeakPrice }}',
-        '{{ booking.start_date }}',
-        '{{ booking.end_date }}',
-        '{{ booking.room_type }}',
-        '{{ booking.transaction_date }}'
-      )
-      $("#futureBooking{{ booking.id }}Price").text('Total paid: £' + futureCost{{ booking.id }}.totalCost)
-      {% endfor %}
-      {% for booking in exp_bookings %}
-      let expCost{{ booking.id }} = calculateBookingCosts(
-        '{{ booking.hotel.peakPrice }}',
-        '{{ booking.hotel.offPeakPrice }}',
-        '{{ booking.start_date }}',
-        '{{ booking.end_date }}',
-        '{{ booking.room_type }}',
-        '{{ booking.transaction_date }}'
-      )
-      $("#expBooking{{ booking.id }}Price").text('Total paid: £' + expCost{{ booking.id }}.totalCost)
-      {% endfor %}
+      // eslint-disable-next-line no-undef
+      getBookingPrices().then((resp) => {
+        for (var i in resp) {
+          $('#' + i + 'Price').text('Total paid: £' + resp[i].toFixed(2))
+        }
+      })
     </script>
   </body>
 </html>
