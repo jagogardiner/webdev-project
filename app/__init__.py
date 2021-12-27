@@ -37,6 +37,14 @@ def page_not_found(e):
     return render_template("error.html"), 404
 
 
+def internal_server_error(e):
+    flash(
+        "There was an internal error - please contact an administrator if this problem"
+        " persists."
+    )
+    return render_template("error.html"), 500
+
+
 def not_authorized(e):
     flash("You are not authorized to view this page.")
     return render_template("home.html"), 403
@@ -46,6 +54,7 @@ def create_app():
     app = Flask(__name__)
     app.register_error_handler(404, page_not_found)
     app.register_error_handler(403, not_authorized)
+    app.register_error_handler(500, internal_server_error)
 
     app.config.from_object(__name__ + ".ConfigClass")
     db.init_app(app)

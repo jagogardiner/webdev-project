@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request, url_for
+from flask import Blueprint, jsonify, request, current_app
 from .costs import Costs
 from flask_login import login_required, current_user
 from . import db
@@ -41,22 +41,26 @@ def api_make_booking():
         random.choice(string.ascii_uppercase + string.digits) for _ in range(8)
     ).upper()
 
-    new_booking = Booking(
-        room_type=roomType,
-        start_date=startDate,
-        end_date=endDate,
-        guests=guestAmount,
-        hotel_id=1,
-        user_id=current_user.id,
-        transaction_date=datetime.now(),
-        booking_reference=bookingReference,
-    )
+    try:
+        new_booking = Booking(
+            room_type=roomType,
+            start_date=startDate,
+            end_date=endDate,
+            guests=guestAmount,
+            hotel_id=1,
+            user_id=current_user.id,
+            transaction_date=datetime.now(),
+            booking_reference=bookingReference,
+        )
+    except Exception:
+        return "Error", 500
 
+    dict = new_booking.to_dict()
     # Add booking data to DB session
     db.session.add(new_booking)
     db.session.commit()
 
-    return url_for("auth.successBooking", bookingId=new_booking.id)
+    return jsonify(dict)
 
 
 @api.route("/api/bookingPrice", methods=["POST"])
@@ -73,3 +77,11 @@ def api_booking_price():
         cost = Costs(row)
         dict[row.__dict__["id"]] = cost.paid
     return jsonify(dict)
+
+
+@api.route("/api/hotelinfo", methods=["POST"])
+def api_hotel_info():
+    data = request.get_json()
+    current_app.logger.debug(data)
+    hotel = db.session.query(Hotel).filter(Hotel.id == data["hotel_id"]).all()
+    return jsonify(hotel)

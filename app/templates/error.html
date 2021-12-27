@@ -21,6 +21,9 @@
     <div id="header"></div>
 
     <main role="main">
+      {% with messages = get_flashed_messages() %} {% if messages %}
+      <div class="alert alert-danger">{{ messages[0] }}</div>
+      {% endif %} {% endwith %}
       <div class="container mt-5 text text-center">
         <h1>Something went wrong!</h1>
         <a href="/" class="h4">Go home instead</a>

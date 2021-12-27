@@ -4,13 +4,39 @@ $('#bookingForm').submit((e) => {
   $('#transactionDate').val(new Date().toISOString().split('T')[0])
 
   $('#bookingSuccessModal').modal('show')
+  let booking
   $.ajax({
     type: 'POST',
     url: '/api/newBooking',
     data: $('#bookingForm').serialize(), // Serializes the form's elements.
-    success(data) {
-      // Call 200 and set window location to booking page + booking ID
-      window.location = data
+    success(bookingdata) {
+      booking = bookingdata
+      $.ajax({
+        type: 'POST',
+        url: '/api/hotelinfo',
+        data: bookingdata.hotel_id,
+        success(hotel) {
+          var modal = $('#bookingSuccessModal')
+          modal.find('.modal-title').text('Booking complete!')
+          console.log(booking)
+          modal
+            .find('.modal-body')
+            .html(
+              '<p class="h5">Thanks for booking with Horizon Hotels!</p><p class="h6">You are staying at: ' +
+                hotel.city +
+                ', from ' +
+                booking.start_date +
+                ' to ' +
+                booking.end_date +
+                '.</p><p class="h6">When you arrive at reception, please bring valid ID and quote the booking reference: #' +
+                booking.booking_reference +
+                '</p>',
+            )
+        },
+      })
+    },
+    error(e) {
+      window.location = e.redirect
     },
   })
 })

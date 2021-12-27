@@ -1,5 +1,7 @@
 from . import db
 from flask_login import UserMixin
+from sqlalchemy_serializer import SerializerMixin
+
 
 # TODO: Comment and refactor
 
@@ -13,7 +15,7 @@ class User(db.Model, UserMixin):
     name = db.Column(db.String(100))
 
 
-class Hotel(db.Model):
+class Hotel(db.Model, SerializerMixin):
     # Database class for a hotel
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     city = db.Column(db.String(20))
@@ -25,7 +27,7 @@ class Hotel(db.Model):
     offPeakPrice = db.Column(db.Integer)
 
 
-class Booking(db.Model):
+class Booking(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     hotel_id = db.Column(db.Integer, db.ForeignKey("hotel.id"))
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
