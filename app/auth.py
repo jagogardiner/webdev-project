@@ -9,7 +9,6 @@ from flask import (
     abort,
 )
 from flask_login import login_required, login_user, current_user, logout_user
-from werkzeug.exceptions import HTTPException
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import send_file
 from app import db
@@ -25,7 +24,7 @@ def redirect_dest(fallback):
     dest = request.args.get("next")
     try:
         return redirect(dest)
-    except HTTPException:
+    except Exception:
         return redirect(fallback)
 
 
@@ -145,18 +144,6 @@ def logout():
 def booking(city):
     hotel = Hotel.query.filter_by(city=city).first_or_404()
     return render_template("booking.html", hotel=hotel)
-
-
-@auth.route("/bookingSuccess/<bookingId>")
-@login_required
-def successBooking(bookingId):
-    # Get booking details from ID.
-    booking = Booking.query.filter_by(id=int(bookingId)).first()
-    if booking.user_id != current_user.id:
-        # Abort if logged in user is mot the user assigned to the booking.
-        abort(403)
-
-    return render_template("bookingSuccess.html", booking=booking)
 
 
 @auth.route("/getInvoice/<bookingId>")

@@ -14,11 +14,11 @@ $('#bookingForm').submit((e) => {
       $.ajax({
         type: 'POST',
         url: '/api/hotelinfo',
-        data: bookingdata.hotel_id,
+        contentType: 'application/json',
+        data: JSON.stringify(bookingdata),
         success(hotel) {
           var modal = $('#bookingSuccessModal')
           modal.find('.modal-title').text('Booking complete!')
-          console.log(booking)
           modal
             .find('.modal-body')
             .html(

@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request, current_app
+from flask import Blueprint, jsonify, request
 from .costs import Costs
 from flask_login import login_required, current_user
 from . import db
@@ -82,6 +82,5 @@ def api_booking_price():
 @api.route("/api/hotelinfo", methods=["POST"])
 def api_hotel_info():
     data = request.get_json()
-    current_app.logger.debug(data)
-    hotel = db.session.query(Hotel).filter(Hotel.id == data["hotel_id"]).all()
+    hotel = db.session.query(Hotel).filter(Hotel.id == data["hotel_id"]).one().to_dict()
     return jsonify(hotel)
