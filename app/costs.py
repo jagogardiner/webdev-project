@@ -24,7 +24,10 @@ class Costs:
             price_pn = booking.hotel.offPeakPrice
 
         if booking.room_type == "double":
-            price_pn *= 1.2
+            if booking.guests == 2:
+                price_pn *= 1.3
+            else:
+                price_pn *= 1.2
         elif booking.room_type == "family":
             price_pn *= 1.5
 
