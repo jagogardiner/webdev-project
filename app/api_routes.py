@@ -1,9 +1,10 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, current_app, send_file, abort
 from .costs import Costs
 from flask_login import login_required, current_user
 from . import db
 from .model import Booking, Hotel
 from datetime import datetime
+from .pdf import Receipt
 import random
 import string
 
@@ -84,3 +85,18 @@ def api_hotel_info():
     data = request.get_json()
     hotel = db.session.query(Hotel).filter(Hotel.id == data["hotel_id"]).one().to_dict()
     return jsonify(hotel)
+
+
+@api.route("/api/invoice/<bookingId>")
+@login_required
+def getInvoice(bookingId):
+    # Get booking details from ID.
+    booking = Booking.query.filter_by(id=int(bookingId)).first()
+    if booking.user_id != current_user.id:
+        # Abort if logged in user is mot the user assigned to the booking.
+        abort(403)
+    receipt = Receipt(booking=booking)
+    pdf = receipt.pdf
+    path = current_app.config["CLIENT_PDF"] + booking.booking_reference + "-booking.pdf"
+    pdf.output(path, dest="S")
+    return send_file(path, environ=request.environ, as_attachment=True)

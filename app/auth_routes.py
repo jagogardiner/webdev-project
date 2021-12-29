@@ -6,15 +6,12 @@ from flask import (
     flash,
     current_app,
     url_for,
-    abort,
 )
 from flask_login import login_required, login_user, current_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from werkzeug.utils import send_file
 from app import db
 from functools import wraps
 from datetime import date
-from .pdf import Receipt
 from .model import User, Hotel, Booking
 
 auth = Blueprint("auth", __name__)
@@ -144,18 +141,3 @@ def logout():
 def booking(city):
     hotel = Hotel.query.filter_by(city=city).first_or_404()
     return render_template("booking.html", hotel=hotel)
-
-
-@auth.route("/getInvoice/<bookingId>")
-@login_required
-def getInvoice(bookingId):
-    # Get booking details from ID.
-    booking = Booking.query.filter_by(id=int(bookingId)).first()
-    if booking.user_id != current_user.id:
-        # Abort if logged in user is mot the user assigned to the booking.
-        abort(403)
-    receipt = Receipt(booking=booking)
-    pdf = receipt.pdf
-    path = current_app.config["CLIENT_PDF"] + booking.booking_reference + "-booking.pdf"
-    pdf.output(path, dest="S")
-    return send_file(path, environ=request.environ, as_attachment=True)

@@ -74,7 +74,7 @@ def create_app():
     app.register_blueprint(app_blueprint)
 
     # blueprint for api routes
-    from .api import api as api_blueprint
+    from .api_routes import api as api_blueprint
 
     app.register_blueprint(api_blueprint)
 
