@@ -66,7 +66,7 @@ async function getCosts(hotel_id, start_date, end_date, room_type) {
  * @returns {Promise}
  */
 async function getBookingPrices() {
-  const resp = await fetch('/api/bookingPrice', {
+  const resp = await fetch('/api/member/bookingprices', {
     // POST request with no body
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
