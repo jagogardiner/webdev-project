@@ -20,15 +20,16 @@
     <main>
       <div class="container">
         <h3>Hello, {{ user.name }}</h3>
-        <nav class="navbar navbar-expand-lg navbar-light">
+        <nav class="navbar navbar-expand-lg pb-0 mb-0 navbar-light">
           <ul class="navbar-nav">
-            <a class="nav-link active" id="booking" href="#">Bookings</a>
+            <a class="nav-link active" data-target="bookings-div" id="booking-nav" href="#">Bookings</a>
           </ul>
           <ul class="navbar-nav">
-            <a class="nav-link" id="details" href="#">Change details</a>
+            <a class="nav-link" id="details" data-target="details-div" href="#">Change details</a>
           </ul>
         </nav>
-        <div id="bookings-div" style="display:none">
+        <hr>
+        <div id="bookings-div" class="member-div">
           <h4>Upcoming bookings:</h4>
           <div class="row mt-2 row-cols-1 row-cols-md-2 row-cols-xl-3 g-3">
             {% if future_bookings|length == 0 %}
@@ -136,7 +137,36 @@
             {% endif %}
           </div>
         </div>
-      </div>
+        <div id="details-div" class="member-div" style="display: none;">
+          <div class="row shadow-sm border border-1 p-3 mb-4" style="border-color:darkgray;">
+            <h5>Change password</h5>
+            <form id="changePasswordForm">
+              <div class="mb-3">
+                <label for="oldPasswordInput" class="form-label">Old password</label>
+                <input type="password" class="form-control" id="oldPasswordInput" required>
+              </div>
+              <div class="mb-3">
+                <label for="newPasswordInput" class="form-label">New password</label>
+                <input type="password" class="form-control" id="newPasswordInput" required>
+                <div id="passwordHelp" class="form-text">Minimum 8 characters, at least: one capital letter, one
+                  lowercase letter, one numerical character and one special character.</div>
+              </div>
+              <div class="mb-3">
+                <label for="newPasswordConfirm" class="form-label">Confirm new password</label>
+                <input type="password" class="form-control" id="newPasswordConfirm" required>
+              </div>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          </div>
+          <div class="row shadow-sm border border-1 p-3 mb-3" style="border-color:darkgray;">
+            <div class="col">
+              <input type="text" class="form-control" placeholder="First name" aria-label="First name">
+            </div>
+            <div class="col">
+              <input type="text" class="form-control" placeholder="Last name" aria-label="Last name">
+            </div>
+          </div>
+        </div>
     </main>
 
     <div id="footer"></div>
@@ -164,8 +194,20 @@
           $('#' + i + 'Price').text('Total paid: £' + resp[i].toFixed(2))
         }
       })
-      $("#booking").click(function () {
-        $("#bookings-div").toggle()
+      $(".nav-link").click(function () {
+        $(".member-div").hide()
+        $(".nav-link").removeClass("active")
+        $(this).addClass("active")
+        $("#" + $(this).data("target")).show();
+      })
+      $("#newPasswordInput").keyup(function () {
+        var inputval = $(this).val()
+        var charreg = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+        if (!charreg.test(inputval)) {
+          $(this).addClass("error")
+        } else {
+          $(this).addClass("valid")
+        }
       })
     </script>
   </body>

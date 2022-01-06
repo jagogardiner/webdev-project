@@ -142,9 +142,3 @@ def logout():
 def booking(city):
     hotel = Hotel.query.filter_by(city=city).first_or_404()
     return render_template("booking.html", hotel=hotel)
-
-
-@auth.route("/account")
-@login_required
-def account():
-    return render_template("account.html")
