@@ -73,3 +73,17 @@ async function getBookingPrices() {
   })
   return resp.json()
 }
+
+function passwordValidate(val) {
+  if (val) {
+    var charreg =
+      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+    if (!charreg.test(val)) {
+      return false
+    } else {
+      return true
+    }
+  } else {
+    return true
+  }
+}

@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, current_app, send_file, abort
 from .costs import Costs
 from flask_login import login_required, current_user
-from werkzeug.security import generate_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 from . import db
 from .model import Booking, Hotel, User
 from datetime import datetime
@@ -133,10 +133,18 @@ def get_invoice(booking_id):
 @api.route("/api/password", methods=["POST"])
 @login_required
 def change_password():
-    user = db.session.query(User).filter(User.id == current_user.id).one()
-    user.passwordHash = generate_password_hash(
-        request.form["requested"], method="sha256"
-    )
-    db.session.commit()
-    db.session.close()
-    return "OK", 200
+    old_password = request.form["oldPasswordInput"]
+    new_password = request.form["newPasswordInput"]
+    new_password_confirm = request.form["newPasswordConfirm"]
+
+    if old_password == check_password_hash(current_user.passwordHash, old_password):
+        if new_password == new_password_confirm:
+            user = db.session.query(User).filter(User.id == current_user.id).one()
+            user.passwordHash = generate_password_hash(
+                request.form["newPasswordConfirm"], method="sha256"
+            )
+            db.session.commit()
+            db.session.close()
+            return "OK", 200
+    else:
+        return 400

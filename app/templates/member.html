@@ -140,20 +140,22 @@
         <div id="details-div" class="member-div" style="display: none;">
           <div class="row shadow-sm border border-1 p-3 mb-4" style="border-color:darkgray;">
             <h5>Change password</h5>
-            <form id="changePasswordForm">
+            <form id="changePasswordForm" name="changePasswordForm" method="POST" role="form">
               <div class="mb-3">
                 <label for="oldPasswordInput" class="form-label">Old password</label>
-                <input type="password" class="form-control" id="oldPasswordInput" required>
+                <input type="password" class="form-control" name="oldPasswordInput" id="oldPasswordInput" required>
               </div>
               <div class="mb-3">
                 <label for="newPasswordInput" class="form-label">New password</label>
-                <input type="password" class="form-control" id="newPasswordInput" required>
+                <input type="password" class="password-ctl form-control" name="newPasswordInput" id="newPasswordInput"
+                  required>
                 <div id="passwordHelp" class="form-text">Minimum 8 characters, at least: one capital letter, one
                   lowercase letter, one numerical character and one special character.</div>
               </div>
               <div class="mb-3">
                 <label for="newPasswordConfirm" class="form-label">Confirm new password</label>
-                <input type="password" class="form-control" id="newPasswordConfirm" required>
+                <input type="password" class="password-ctl form-control" name="newPasswordConfirm"
+                  id="newPasswordConfirm" required>
               </div>
               <button type="submit" class="btn btn-primary">Submit</button>
             </form>
@@ -200,14 +202,28 @@
         $(this).addClass("active")
         $("#" + $(this).data("target")).show();
       })
-      $("#newPasswordInput").keyup(function () {
-        var inputval = $(this).val()
-        var charreg = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
-        if (!charreg.test(inputval)) {
-          $(this).addClass("error")
+      $(".password-ctl").keyup(function () {
+        // eslint-disable-next-line no-undef
+        if (!passwordValidate($(this).val())) {
+          $(this).addClass("border border-danger")
         } else {
-          $(this).addClass("valid")
+          $(this).removeClass("border border-danger")
         }
+      }
+      )
+      $("#changePasswordForm").submit((e) => {
+        e.preventDefault();
+        $.ajax({
+          type: "POST",
+          url: '/api/password',
+          data: $(this).serialize(),
+          success: () => {
+
+          },
+          error: () => {
+
+          }
+        })
       })
     </script>
   </body>

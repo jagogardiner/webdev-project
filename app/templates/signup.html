@@ -26,7 +26,7 @@
         {% endif %} {% endwith %}
         <!-- Messy way of adding both classes, so radius applies correctly -->
         <div class="form-signin form-signup">
-          <form method="POST">
+          <form id="signup" method="POST">
             <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
             <div class="form-floating">
               <input type="email" class="form-control" name="email" id="floatingInput" placeholder="name@example.com"
@@ -34,9 +34,14 @@
               <label for="floatingInput">Email address</label>
             </div>
             <div class="form-floating">
-              <input type="password" class="form-control" name="password" id="floatingPassword" placeholder="Password"
-                required />
+              <input type="password" class="password-ctl form-control" name="password" id="floatingPassword"
+                placeholder="Password" required />
               <label for="floatingPassword">Password</label>
+            </div>
+            <div class="form-floating">
+              <input type="password" class="password-ctl form-control" name="cf-password" id="floatingCfPassword"
+                placeholder="Confirm password" required />
+              <label for="floatingPassword">Confirm password</label>
             </div>
             <div class="form-floating mb-3">
               <input type="text" class="form-control" name="name" id="floatingInputValue" placeholder="name"
@@ -70,6 +75,23 @@
       loadTemplate(() => {
         $('#signup-btn').addClass('active').attr('href', '#')
       })
+      $("#signup").submit(function (e) {
+        e.preventDefault()
+        if ($("#floatingPassword").val() != $("#floatingCfPassword").val()) {
+          alert("Please make sure the passwords match.")
+        } else {
+          $(this).submit()
+        }
+      })
+      $(".password-ctl").keyup(function () {
+        // eslint-disable-next-line no-undef
+        if (!passwordValidate($(this).val())) {
+          $(this).addClass("border border-danger")
+        } else {
+          $(this).removeClass("border border-danger")
+        }
+      }
+      )
     </script>
   </body>
 
