@@ -1,5 +1,6 @@
 from . import db
 from flask_login import UserMixin
+from werkzeug.security import check_password_hash
 from sqlalchemy_serializer import SerializerMixin
 
 
@@ -13,6 +14,9 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(100), unique=True)
     passwordHash = db.Column(db.String(500))
     name = db.Column(db.String(100))
+
+    def check_password(self, password):
+        return check_password_hash(self.passwordHash, password)
 
 
 class Hotel(db.Model, SerializerMixin):

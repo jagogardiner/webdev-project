@@ -216,12 +216,10 @@
         $.ajax({
           type: "POST",
           url: '/api/password',
-          data: $(this).serialize(),
+          data: $("#changePasswordForm").serialize(),
           success: () => {
-
           },
           error: () => {
-
           }
         })
       })

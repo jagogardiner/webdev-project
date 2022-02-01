@@ -80,7 +80,7 @@
         if ($("#floatingPassword").val() != $("#floatingCfPassword").val()) {
           alert("Please make sure the passwords match.")
         } else {
-          $(this).submit()
+          $(this).off("submit").submit()
         }
       })
       $(".password-ctl").keyup(function () {
