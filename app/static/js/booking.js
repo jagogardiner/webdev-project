@@ -7,7 +7,7 @@ $('#bookingForm').submit((e) => {
   let booking
   $.ajax({
     type: 'POST',
-    url: '/api/newBooking',
+    url: '/api/newbooking',
     data: $('#bookingForm').serialize(), // Serializes the form's elements.
     success(bookingdata) {
       booking = bookingdata

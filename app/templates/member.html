@@ -158,14 +158,17 @@
                   id="newPasswordConfirm" required>
               </div>
               <button type="submit" class="btn btn-primary">Submit</button>
+              <div id="passwordConfirmation" class="mt-3"></div>
             </form>
           </div>
           <div class="row shadow-sm border border-1 p-3 mb-3" style="border-color:darkgray;">
+            <h5>Edit name</h5>
             <div class="col">
-              <input type="text" class="form-control" placeholder="First name" aria-label="First name">
-            </div>
-            <div class="col">
-              <input type="text" class="form-control" placeholder="Last name" aria-label="Last name">
+              <form id="changeNameForm" name="changeNameForm" method="POST" role="form">
+                <input type="text" class="form-control" name="newNameInput" id="newNameInput" placeholder="New name"
+                  aria-label="New name" required aria-required="true">
+                <button type="submit" class="mt-3 btn btn-primary">Submit</button>
+              </form>
             </div>
           </div>
         </div>
@@ -212,16 +215,36 @@
       }
       )
       $("#changePasswordForm").submit((e) => {
-        e.preventDefault();
+        e.preventDefault()
         $.ajax({
           type: "POST",
           url: '/api/password',
           data: $("#changePasswordForm").serialize(),
           success: () => {
+            $("#passwordConfirmation").append("<p class='text-success'>Password change confirmed</p>")
           },
           error: () => {
+            $("#passwordConfirmation").append("<p class='text-danger'>Password change failed. Please try again.</p>")
           }
         })
+        $("#changePasswordForm").trigger("reset")
+        $("#passwordConfirmation").empty()
+      })
+      $("#changeNameForm").submit((e) => {
+        console.log($("#changeNameForm").serialize())
+        e.preventDefault()
+        $.ajax({
+          type: "POST",
+          url: "/api/changename",
+          data: $("#changeNameForm").serialize(),
+          success: () => {
+            location.reload()
+          },
+          error: () => {
+            //
+          }
+        })
+        $("#changeNameForm").trigger("reset")
       })
     </script>
   </body>

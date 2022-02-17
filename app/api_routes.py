@@ -3,7 +3,7 @@ from .costs import Costs
 from flask_login import login_required, current_user
 from werkzeug.security import generate_password_hash
 from . import db
-from .model import Booking, Hotel, User
+from .model import Booking, Hotel
 from datetime import datetime
 from .pdf import Receipt
 import random
@@ -133,14 +133,14 @@ def get_invoice(booking_id):
 @api.route("/api/password", methods=["POST"])
 @login_required
 def change_password():
+    # API endpoint to change users password
     old_password = request.form["oldPasswordInput"]
     new_password = request.form["newPasswordInput"]
     new_password_confirm = request.form["newPasswordConfirm"]
 
     if current_user.check_password(old_password):
         if new_password == new_password_confirm:
-            user = db.session.query(User).filter(User.id == current_user.id).one()
-            user.passwordHash = generate_password_hash(
+            current_user.passwordHash = generate_password_hash(
                 request.form["newPasswordConfirm"], method="sha256"
             )
             db.session.commit()
@@ -148,3 +148,13 @@ def change_password():
             return "OK", 200
     else:
         return "Bad password", 400
+
+
+@api.route("/api/changename", methods=["POST"])
+@login_required
+def change_name():
+    # API endpoint to change current users name
+    current_user.name = request.form["newNameInput"]
+    db.session.commit()
+    db.session.close()
+    return "OK", 200
