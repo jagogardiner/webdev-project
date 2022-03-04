@@ -9,7 +9,6 @@ class Costs:
         self.paid = 0
         self.__calculateCosts(booking=booking)
         self.price_pn = self.total / self.nights
-        pass
 
     # TODO: Comment, refactor
     def __calculateCosts(self, booking: Booking):
