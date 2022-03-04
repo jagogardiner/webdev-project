@@ -30,9 +30,8 @@ def admin_required(f):
     def wrap(*args, **kwargs):
         if current_user.id == 1:
             return f(*args, **kwargs)
-        else:
-            flash("You need to be an admin to view this page.")
-            return redirect("/")
+        flash("You need to be an admin to view this page.")
+        return redirect("/")
 
     return wrap
 
