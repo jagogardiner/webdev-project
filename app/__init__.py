@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 db = SQLAlchemy()
 
 
-class ConfigClass(object):
+class ConfigClass:
     """Flask application config"""
 
     TEMPLATES_AUTO_RELOAD = True
