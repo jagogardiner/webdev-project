@@ -41,7 +41,7 @@ def login():
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
-        remember = True if request.form.get("remember-me") else False
+        remember = bool(request.form.get("remember-me"))
 
         user = User.query.filter_by(email=email).first()
 
