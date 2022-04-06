@@ -45,6 +45,7 @@ def api_make_booking():
     startDate = request.form.get("startDate")
     endDate = request.form.get("endDate")
     guestAmount = request.form.get("guestAmount")
+    hotelId = request.form.get("hotelId")
 
     # Generate random booking reference
     bookingReference = "".join(
@@ -57,7 +58,7 @@ def api_make_booking():
             start_date=startDate,
             end_date=endDate,
             guests=guestAmount,
-            hotel_id=1,
+            hotel_id=hotelId,
             user_id=current_user.id,
             transaction_date=datetime.now(),
             booking_reference=bookingReference,

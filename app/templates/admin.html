@@ -17,11 +17,72 @@
   <body>
     <div id="header"></div>
 
-    <main role="main">
+    <main>
       <div class="container">
-        <h2 class="mt-5">Hello, administrator.</h2>
+        <h3>Hello, {{ user.name }}</h3>
         <p class="lead">What would you like to do?</p>
-      </div>
+        <nav class="navbar navbar-expand-lg pb-0 mb-0 navbar-light">
+          <ul class="navbar-nav">
+            <a class="nav-link active" data-target="hotels-div" id="hotels-nav" href="#">Edit hotel information</a>
+          </ul>
+          <ul class="navbar-nav">
+            <a class="nav-link" id="details" data-target="addhotel-div" href="#">Add new hotel</a>
+          </ul>
+          <ul class="navbar-nav">
+            <a class="nav-link" id="details" data-target="details-div" href="#">Change details</a>
+          </ul>
+        </nav>
+        <hr>
+        <div id="hotels-div" class="member-div">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-1 list-group w-25">
+                {% for hotel in hotels %}
+                <a href="#edit{{ hotel.city }}" class="list-group-item list-group-item-action">{{ hotel.city }}</a>
+                {% endfor %}
+              </div>
+              <div class="col">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="addhotel-div" class="member-div" style="display: none;">
+        </div>
+        <div id="details-div" class="member-div" style="display: none;">
+          <div class="row shadow-sm border border-1 p-3 mb-4" style="border-color:darkgray;">
+            <h5>Change password</h5>
+            <form id="changePasswordForm" name="changePasswordForm" method="POST" role="form">
+              <div class="mb-3">
+                <label for="oldPasswordInput" class="form-label">Old password</label>
+                <input type="password" class="form-control" name="oldPasswordInput" id="oldPasswordInput" required>
+              </div>
+              <div class="mb-3">
+                <label for="newPasswordInput" class="form-label">New password</label>
+                <input type="password" class="password-ctl form-control" name="newPasswordInput" id="newPasswordInput"
+                  required>
+                <div id="passwordHelp" class="form-text">Minimum 8 characters, at least: one capital letter, one
+                  lowercase letter, one numerical character and one special character.</div>
+              </div>
+              <div class="mb-3">
+                <label for="newPasswordConfirm" class="form-label">Confirm new password</label>
+                <input type="password" class="password-ctl form-control" name="newPasswordConfirm"
+                  id="newPasswordConfirm" required>
+              </div>
+              <button type="submit" class="btn btn-primary">Submit</button>
+              <div id="passwordConfirmation" class="mt-3"></div>
+            </form>
+          </div>
+          <div class="row shadow-sm border border-1 p-3 mb-3" style="border-color:darkgray;">
+            <h5>Edit name</h5>
+            <div class="col">
+              <form id="changeNameForm" name="changeNameForm" method="POST" role="form">
+                <input type="text" class="form-control" name="newNameInput" id="newNameInput" placeholder="New name"
+                  aria-label="New name" required aria-required="true">
+                <button type="submit" class="mt-3 btn btn-primary">Submit</button>
+              </form>
+            </div>
+          </div>
+        </div>
     </main>
 
     <div id="footer"></div>
@@ -43,6 +104,26 @@
       loadTemplate(() => {
         $('#member-btn').addClass('active').attr('href', '#')
       })
+      $(".nav-link").click(function () {
+        $(".member-div").hide()
+        $(".nav-link").removeClass("active")
+        $(this).addClass("active")
+        $("#" + $(this).data("target")).show();
+      })
+      $(".password-ctl").keyup(function () {
+        // eslint-disable-next-line no-undef
+        if (!passwordValidate($(this).val())) {
+          $(this).addClass("border border-danger")
+        } else {
+          $(this).removeClass("border border-danger")
+        }
+      })
+      // Setup a href listener that ignores all hrefs that don't link to #edit*
+      $('a').filter('[href*="#edit"]').click(function () {
+        alert("good :)")
+      });
+
+      // Listen for any href clicked.
     </script>
   </body>
 

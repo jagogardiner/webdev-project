@@ -128,7 +128,7 @@ def member_page():
 @login_required
 @admin_required
 def admin_dash():
-    return render_template("admin.html")
+    return render_template("admin.html", user=current_user, hotels=Hotel.query.all())
 
 
 @auth.route("/logout")
