@@ -235,7 +235,7 @@
         e.preventDefault()
         $.ajax({
           type: "POST",
-          url: "/api/changename",
+          url: "/api/member/changename",
           data: $("#changeNameForm").serialize(),
           success: () => {
             location.reload()

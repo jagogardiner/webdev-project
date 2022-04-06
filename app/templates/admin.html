@@ -26,9 +26,6 @@
             <a class="nav-link active" data-target="hotels-div" id="hotels-nav" href="#">Edit hotel information</a>
           </ul>
           <ul class="navbar-nav">
-            <a class="nav-link" id="details" data-target="addhotel-div" href="#">Add new hotel</a>
-          </ul>
-          <ul class="navbar-nav">
             <a class="nav-link" id="details" data-target="details-div" href="#">Change details</a>
           </ul>
         </nav>
@@ -36,17 +33,72 @@
         <div id="hotels-div" class="member-div">
           <div class="container">
             <div class="row">
-              <div class="col-md-1 list-group w-25">
+              <div class="col-md-1 list-group rounded w-25">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addhotel">
+                  Add new hotel
+                </button>
                 {% for hotel in hotels %}
                 <a href="#edit{{ hotel.city }}" class="list-group-item list-group-item-action">{{ hotel.city }}</a>
                 {% endfor %}
               </div>
               <div class="col">
+                <h2 id="hotelEditHeader">Edit hotel information</h2>
+                <form hidden>
+                  <div class="input-group">
+                    <span class="input-group-text">City name</span>
+                    <input type="text" class="form-control" name="cityNameValue" id="cityNameValue" placeholder="city"
+                      aria-label="City name" required />
+                  </div>
+                  <div class="input-group pt-3">
+                    <!-- Number input for number of total rooms -->
+                    <span class="input-group-text">Total rooms</span>
+                    <input type="number" class="form-control" name="totalRoomsValue" id="totalRoomsValue"
+                      placeholder="10" min="10" />
+                  </div>
+                  <div class="input-group pt-3">
+                    <!-- Number input for number of off peak price-->
+                    <span class="input-group-text">Off peak price</span>
+                    <input type="number" class="form-control" name="offPeakPriceValue" id="offPeakPriceValue"
+                      placeholder="10" min="10" />
+                  </div>
+                  <div class="input-group pt-3">
+                    <!-- Number input for number of on peak price-->
+                    <span class="input-group-text">Peak price</span>
+                    <input type="number" class="form-control" name="peakPriceValue" id="peakPriceValue" placeholder="10"
+                      min="10" />
+                  </div>
+                </form>
+                <!-- Default carousel photos, set none active -->
+                <div id="hotelOverview" class="carousel mt-4 slide" style="height: 300px;" data-bs-ride="carousel">
+                  <div class="carousel-inner" role="listbox">
+                    <div id="firstImage" class="carousel-item">
+                      <img src="../static/images/aberdeen/image1.jpg" class="d-block card-img-top-view img-fluid"
+                        alt="..." style="max-height: 300px;" />
+                    </div>
+                    <div class="carousel-item">
+                      <img src="../static/images/aberdeen/image2.jpg" class="d-block card-img-top-view img-fluid"
+                        alt="..." style="max-height: 300px;" />
+                    </div>
+                    <div class="carousel-item">
+                      <img src="../static/images/aberdeen/image3.jpg" class="d-block card-img-top-view img-fluid"
+                        alt="..." style="max-height: 300px;" />
+                    </div>
+                  </div>
+                  <button class="carousel-control-prev" type="button" data-bs-target="#hotelOverview"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#hotelOverview"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div id="addhotel-div" class="member-div" style="display: none;">
         </div>
         <div id="details-div" class="member-div" style="display: none;">
           <div class="row shadow-sm border border-1 p-3 mb-4" style="border-color:darkgray;">
@@ -83,6 +135,29 @@
             </div>
           </div>
         </div>
+        <div class="modal fade" id="addhotel" tabindex="-1" aria-labelledby="addhotelLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add new hotel</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form>
+                  <div class="input-group">
+                    <span class="input-group-text">City name</span>
+                    <input type="text" class="form-control" name="cityNameValue" id="cityNameValue" placeholder="City"
+                      aria-label="City name" required />
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
     </main>
 
     <div id="footer"></div>
@@ -104,12 +179,14 @@
       loadTemplate(() => {
         $('#member-btn').addClass('active').attr('href', '#')
       })
+      // Navlink click event
       $(".nav-link").click(function () {
         $(".member-div").hide()
         $(".nav-link").removeClass("active")
         $(this).addClass("active")
         $("#" + $(this).data("target")).show();
       })
+      // Validate password
       $(".password-ctl").keyup(function () {
         // eslint-disable-next-line no-undef
         if (!passwordValidate($(this).val())) {
@@ -120,10 +197,43 @@
       })
       // Setup a href listener that ignores all hrefs that don't link to #edit*
       $('a').filter('[href*="#edit"]').click(function () {
-        alert("good :)")
+        // Remove form hidden
+        $('form').removeAttr('hidden')
+        // Remove active class from all possible options
+        $('a').filter('[href*="#edit"]').removeClass('active')
+        // Set clicked active
+        $(this).addClass('active')
+        $("#hotelEditHeader").text("Edit " + $(this).text() + " information")
+        // Get hotel information
+        $.ajax({
+          url: "/api/hotelinfo",
+          type: "POST",
+          data: JSON.stringify({ hotel_id: $(this).index() }),
+          contentType: 'application/json',
+          success: function (data) {
+            // City name value
+            $("#cityNameValue").val(data.city)
+            // Total room value
+            $("#totalRoomsValue").val(data.totalCapacity)
+            // Off peak value
+            $("#offPeakPriceValue").val(data.offPeakPrice)
+            // Peak price value
+            $("#peakPriceValue").val(data.peakPrice)
+          }
+        })
+        // put jquery this into variable
+        var $this = $(this)
+
+        // Modify all carousel images
+        $(".carousel-item").each(function (i) {
+          $(this).find("img").attr("src", "../static/images/" + $this.text() + "/image" + (i + 1) + ".jpg")
+          $(this).removeClass("active")
+        })
+
+        // Set carousel active
+        $("#firstImage").addClass("active")
       });
 
-      // Listen for any href clicked.
     </script>
   </body>
 

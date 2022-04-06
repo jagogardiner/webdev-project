@@ -18,11 +18,55 @@
     <div id="header"></div>
     <!-- Begin page content -->
     <main role="main">
-      <div class="container mt-5">
+      <div class="container">
         {% with messages = get_flashed_messages() %} {% if messages %}
         <div class="alert alert-danger">{{ messages[0] }}</div>
         {% endif %} {% endwith %}
-        <h1 class="">Home page!</h1>
+      </div>
+      <!-- Carousel showing off all website images -->
+      <div id="showcaseCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner" role="listbox">
+          <!-- Set ID for first ever image. -->
+          {% for hotel in hotels %}
+          <div id="firstImage" class="carousel-item card">
+            <img src="../static/images/{{ hotel.city }}/image1.jpg" class="d-block card-img-top-view img-fluid"
+              alt="..." />
+            <div class="carousel-caption">
+              <div class="main-caption">Horizon Hotels</div>
+            </div>
+          </div>
+          <div class="carousel-item card">
+            <img src="../static/images/{{ hotel.city }}/image2.jpg" class="d-block card-img-top-view img-fluid"
+              alt="..." />
+            <div class="carousel-caption">
+              <div class="main-caption">Horizon Hotels</div>
+            </div>
+          </div>
+          <div class="carousel-item card">
+            <img src="../static/images/{{ hotel.city }}/image3.jpg" class="d-block card-img-top-view img-fluid"
+              alt="..." />
+            <div class="carousel-caption">
+              <div class="main-caption">Horizon Hotels</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <!-- The HTML5 video element that will create the background video on the header -->
+      <video class="custom-video" playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop">
+        <source src="https://storage.googleapis.com/coverr-main/mp4/Mt_Baker.mp4" type="video/mp4">
+      </video>
+      <div class="container h-100">
+        <div class="d-flex h-100 text-center align-items-center">
+          <div class="w-100 text-white">
+            <h1 class="display-3">Video Header</h1>
+            <p class="lead mb-0">Using HTML5 Video and Bootstrap</p>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus inventore, atque velit aperiam non optio totam
+        suscipit! Quasi quisquam exercitationem totam, expedita voluptates nemo deserunt voluptas quod cum possimus nam.
       </div>
     </main>
     <div id="footer"></div>
@@ -44,6 +88,8 @@
       loadTemplate(() => {
         $('#home').addClass('active').attr('href', '#')
       })
+
+      $("#firstImage").addClass("active");
     </script>
   </body>
 

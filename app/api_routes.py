@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, request, current_app, send_file, abort
+
 from .costs import Costs
 from flask_login import login_required, current_user
 from werkzeug.security import generate_password_hash
@@ -151,7 +152,7 @@ def change_password():
         return "Bad password", 400
 
 
-@api.route("/api/changename", methods=["POST"])
+@api.route("/api/member/changename", methods=["POST"])
 @login_required
 def change_name():
     # API endpoint to change current users name

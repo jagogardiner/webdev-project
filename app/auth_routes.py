@@ -86,7 +86,14 @@ def signup():
         db.session.add(new_user)
         db.session.commit()
         db.session.close()
-        return redirect("/login")
+
+        verify_user = User.query.filter_by(email=email).first()
+        if verify_user:
+            login_user(verify_user)
+            return redirect_dest(fallback=url_for("app.home"))
+        else:
+            flash("Something went wrong!")
+            return redirect("/signup")
 
     return render_template("signup.html")
 

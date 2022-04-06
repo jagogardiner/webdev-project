@@ -88,3 +88,31 @@ main > .container {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+.carousel-caption {
+  position: absolute;
+  right: 0%;
+  bottom: 200px;
+  left: 0%;
+  z-index: 10;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  color: #fff;
+  text-align: center;
+}
+
+.main-caption {
+  color: white;
+  font-size: 75px;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: bold;
+}
+
+.custom-video {
+  position: absolute;
+  max-height: 20%;
+  -ms-transform: translateX(-50%) translateY(-50%);
+  -moz-transform: translateX(-50%) translateY(-50%);
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+}

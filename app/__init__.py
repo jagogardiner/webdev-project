@@ -25,6 +25,9 @@ class ConfigClass(object):
     USER_ENABLE_EMAIL = False  # Disable email authentication
     USER_ENABLE_USERNAME = True  # Enable username authentication
     USER_REQUIRE_RETYPE_PASSWORD = False  # Simplify register form
+    USER_AUTO_LOGIN_AFTER_REGISTER = (
+        True  # Automatically log user in after registration
+    )
 
     # Client directories
     CLIENT_PDF = "app/static/client/pdf/"
