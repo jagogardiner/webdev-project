@@ -4,7 +4,6 @@ from werkzeug.security import check_password_hash
 from sqlalchemy_serializer import SerializerMixin
 
 
-# TODO: Comment and refactor
 class User(db.Model, UserMixin):
     # Database class for a user
     # primary keys are required by SQLAlchemy

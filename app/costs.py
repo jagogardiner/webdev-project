@@ -11,12 +11,9 @@ class Costs:
         self.price_pn = self.total / self.nights
         pass
 
-    # TODO: Comment, refactor
     def __calculateCosts(self, booking: Booking):
-        """TODO: Comment
-
-        Args:
-            booking (Booking): [description]
+        """
+        Calculates the costs of the booking.
         """
         if booking.start_date.month in range(4, 10):
             price_pn = booking.hotel.peakPrice
