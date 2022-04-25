@@ -53,7 +53,8 @@ $('#startDate').on('change', () => {
   $('#endDate').attr('min', addDays(startVal, 1)) // Set minimum value to same date as start date, plus one
 })
 $('#startDate').val(todayDate).trigger('change')
-// TODO: Annotate and document
+
+// This block changes the max value of people allowed to stay in the hotel.
 $('#roomType').on('change', function () {
   $('#guestAmount').empty()
   $('#guestAmount').removeAttr('disabled')

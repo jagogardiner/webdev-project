@@ -28,7 +28,7 @@ def redirect_dest(fallback):
 def admin_required(f):
     @wraps(f)
     def wrap(*args, **kwargs):
-        if current_user.id == 1:
+        if current_user.user_type == 1:
             return f(*args, **kwargs)
         else:
             flash("You need to be an admin to view this page.")
@@ -52,7 +52,7 @@ def login():
 
         current_app.logger.info("Logging in")
         login_user(user, remember=remember)
-        if user.id == 1:
+        if user.user_type == 1:
             return redirect("/admin")
         return redirect_dest(fallback=url_for("app.home"))
 
@@ -80,6 +80,7 @@ def signup():
             email=email,
             passwordHash=generate_password_hash(password, method="sha256"),
             name=name,
+            user_type=2,  # default to user, not admin
         )
 
         # add the new user to the database
@@ -102,7 +103,7 @@ def signup():
 @login_required
 def member_page():
     # If the user is admin, don't go to the member booking page.
-    if current_user.id == 1:
+    if current_user.user_type == 1:
         return redirect("/admin")
 
     # Get a list of future user bookings
@@ -150,3 +151,26 @@ def logout():
 def booking(city):
     hotel = Hotel.query.filter_by(city=city).first_or_404()
     return render_template("booking.html", hotel=hotel)
+
+
+# Forgot password - dummy route
+@auth.route("/forgot", methods=["POST", "GET"])
+def forgot_password():
+    # Check for POST
+    if request.method == "POST":
+        email = request.form.get("email")
+        user = User.query.filter_by(email=email).first()
+        if user:
+            # Flash "reset password email sent" but don't actually send an email
+            # this is a demo
+            flash("Password reset email sent!")
+            # Reset the password to 12345
+            user.passwordHash = generate_password_hash("12345", method="sha256")
+            db.session.commit()
+            db.session.close()
+            return redirect("/login")
+        else:
+            flash("Email address not found!")
+            return redirect("/forgot")
+
+    return render_template("forgot.html")

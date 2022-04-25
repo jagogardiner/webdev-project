@@ -77,7 +77,7 @@
       loadTemplate(() => {
         $('#signup-btn').addClass('active').attr('href', '#')
       })
-      $("#signup").submit(function (e) {
+      $("#signup").submit((e) => {
         e.preventDefault()
         if ($("#floatingPassword").val() != $("#floatingCfPassword").val()) {
           alert("Please make sure the passwords match.")

@@ -101,18 +101,34 @@ main > .container {
   text-align: center;
 }
 
-.main-caption {
-  color: white;
-  font-size: 75px;
-  font-family: 'Inter', sans-serif !important;
-  font-weight: bold;
+/* Cover video for front page */
+#videodiv {
+  height: 500px;
 }
 
-.custom-video {
+#cover {
+  position: fixed;
+  max-height: 500px;
+  min-width: 100%;
+  object-fit: fill;
+}
+
+#video-logo {
   position: absolute;
-  max-height: 20%;
-  -ms-transform: translateX(-50%) translateY(-50%);
-  -moz-transform: translateX(-50%) translateY(-50%);
-  -webkit-transform: translateX(-50%) translateY(-50%);
-  transform: translateX(-50%) translateY(-50%);
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  color: black;
+  font-size: 50px;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: bold;
+  transform: translate(-50%, -50%);
+  color: white;
+  text-shadow: 2px 2px 8px black;
+}
+
+/* heart-red */
+.heart-red {
+  /* lilac purple */
+  color: #d95fee;
 }

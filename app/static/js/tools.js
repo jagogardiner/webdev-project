@@ -61,6 +61,26 @@ async function getCosts(hotel_id, start_date, end_date, room_type) {
 }
 
 /**
+ * Make a query for the room availabilty to the API.
+ */
+async function getRoomAvailability(hotel_id, start_date, end_date, room_type) {
+  // Make a fetch request to the API endpoint
+  const resp = await fetch('/api/availability', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      // Contains the valid information needed for the API endpoint
+      hotel_id: hotel_id,
+      end_date: end_date,
+      start_date: start_date,
+      room_type: room_type,
+    }),
+  })
+  // Recieve the JSON
+  return resp.json()
+}
+
+/**
  * Gets the total paid as for one Booking.
  *
  * @returns {Promise}

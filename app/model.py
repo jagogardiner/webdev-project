@@ -5,8 +5,6 @@ from sqlalchemy_serializer import SerializerMixin
 
 
 # TODO: Comment and refactor
-
-
 class User(db.Model, UserMixin):
     # Database class for a user
     # primary keys are required by SQLAlchemy
@@ -14,6 +12,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(100), unique=True)
     passwordHash = db.Column(db.String(500))
     name = db.Column(db.String(100))
+    user_type = db.Column(db.Integer)
 
     def check_password(self, password):
         return check_password_hash(self.passwordHash, password)
@@ -32,6 +31,7 @@ class Hotel(db.Model, SerializerMixin):
 
 
 class Booking(db.Model, SerializerMixin):
+    # Database class for a booking
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     hotel_id = db.Column(db.Integer, db.ForeignKey("hotel.id"))
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))

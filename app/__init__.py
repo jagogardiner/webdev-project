@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, flash
+from flask import Flask, render_template, flash, current_app
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from dotenv import load_dotenv
@@ -30,7 +30,7 @@ class ConfigClass(object):
     )
 
     # Client directories
-    CLIENT_PDF = "app/static/client/pdf/"
+    CLIENT_PDF = "/static/client/pdf/"
 
 
 # Error handler for 404

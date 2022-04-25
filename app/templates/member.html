@@ -67,7 +67,7 @@
                     <span class="visually-hidden">Next</span>
                   </button>
                 </div>
-                <div class="card-body">
+                <div class="card-body" id="card{{ booking.id }}">
                   <h5 class="card-title">
                     {{ booking.hotel.city }} - #{{ booking.booking_reference }}
                   </h5>
@@ -90,6 +90,10 @@
                   <a href="/api/invoice/{{ booking.id }}" id="futureBooking{{ booking.id }}"
                     class="btn btn-success card-link">Get
                     receipt</a>
+                  <a href="#" id="cancelBooking{{ booking.id }}" data-bs-target="#cancelBookingModal"
+                    data-bs-toggle="modal" data-booking-id="{{ booking.id }}"
+                    class="btn pre-cancel-btn btn-danger card-link">Cancel
+                    booking</a>
                 </div>
               </div>
             </div>
@@ -135,6 +139,28 @@
             {% endfor %}
             <!-- prettier-ignore -->
             {% endif %}
+          </div>
+          <!-- Modal -->
+          <div class="modal fade" id="cancelBookingModal" data-bs-backdrop="static" data-bs-keyboard="false"
+            tabindex="-1" aria-labelledby="cancelBookingModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="cancelBookingModalTitle">
+                    Cancel booking?
+                  </h5>
+                </div>
+                <div class="modal-body">
+                  <input type="hidden" id="cancelBookingId" name="cancelBookingId" />
+                  Are you sure you want to cancel this booking?
+                </div>
+                <div class="modal-footer">
+                  <a href="" class="btn cancel-booking btn-danger btn-lg active" role="button"
+                    aria-pressed="true">Yes</a>
+                  <a href="/member" class="btn btn-success btn-lg active" role="button" aria-pressed="true">No</a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div id="details-div" class="member-div" style="display: none;">
@@ -214,6 +240,14 @@
         }
       }
       )
+      //triggered when modal is about to be shown
+      $('#cancelBookingModal').on('show.bs.modal', function (e) {
+
+        //get data-id attribute of the clicked element
+        var bookingid = $(e.relatedTarget).data('booking-id');
+        //populate the textbox
+        $(e.currentTarget).find('input[name="cancelBookingId"]').val(bookingid);
+      });
       $("#changePasswordForm").submit((e) => {
         e.preventDefault()
         $.ajax({
@@ -241,10 +275,28 @@
             location.reload()
           },
           error: () => {
-            //
+            // something happened, dont worry about it
+            console.log("An error occured. Please try again.")
           }
         })
         $("#changeNameForm").trigger("reset")
+      })
+      $(".cancel-booking").click((e) => {
+        e.preventDefault()
+        var id = $("#cancelBookingModal").find("input[name='cancelBookingId']").val()
+        $.ajax({
+          type: "POST",
+          url: "/api/cancelbooking",
+          data: {
+            booking_id: id
+          },
+          success: () => {
+            location.reload()
+          },
+          error: () => {
+            console.log("An error occured. Please try again.")
+          }
+        })
       })
     </script>
   </body>

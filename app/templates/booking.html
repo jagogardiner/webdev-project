@@ -19,6 +19,9 @@
 
     <main role="main">
       <div class="container">
+        {% with messages = get_flashed_messages() %} {% if messages %}
+        <div class="alert alert-danger">{{ messages[0] }}</div>
+        {% endif %} {% endwith %}
         <div class="row row-cols-1 row-cols-xl-2">
           <div class="col mb-3">
             <div id="hotelOverview" class="carousel slide" data-bs-ride="carousel">
@@ -84,6 +87,8 @@
               <input type="hidden" id="hotelId" name="hotelId" value="{{ hotel.id }}">
             </form>
             <div class="text-bottom mt-auto mb-3">
+              <p class="h6">Booking 90 to 80 days in advance will give you a 20% discount, 60-79 days a 10% discount,
+                and 45-59 days a 5% discount.</p>
               <p id="roomPricePerNight" class="h6"></p>
               <p id="roomPriceTotal" class="h6"></p>
               <p id="roomPriceDiscount" class="h6"></p>
@@ -135,7 +140,6 @@
 
     <!-- Load header and footer -->
     <!-- Script to set date picker to today's date, and dynamically update end date minimum value. -->
-    <!-- TODO: Refactor script -->
     <script>
       loadTemplate()
       // Set event listener for form change - on change, recalculate prices.
@@ -143,26 +147,44 @@
       $('#bookingForm')
         .on('change', () => {
           // eslint-disable-next-line no-undef
-          getCosts(
-            '{{ hotel.id }}',
+          getRoomAvailability('{{ hotel.id }}',
             $('#startDate').val(),
             $('#endDate').val(),
-            $('#roomType').val(),
-          ).then((costs) => {
-            if (costs.nights === 1) {
-              $('#roomPriceTotal').text('1 night: £' + costs.total.toFixed(2))
+            $('#roomType').val()
+          ).then((json) => {
+            if (json.available == false) {
+              $('#bookHotelBtn').prop('disabled', true)
+              $('#bookHotelBtn').addClass('disabled')
+              $('#roomPricePerNight').text('Room unavailable due to availability. Please try a different start date/end date.')
+              $('#roomPriceTotal').text('')
+              $('#roomPriceDiscount').text('')
+              $('#priceTotal').text('')
             } else {
-              $('#roomPriceTotal').text(
-                costs.nights + ' nights: £' + costs.total.toFixed(2),
-              )
+              $('#bookHotelBtn').prop('disabled', false)
+              $('#bookHotelBtn').removeClass('disabled')
+              // eslint-disable-next-line no-undef
+              getCosts(
+                '{{ hotel.id }}',
+                $('#startDate').val(),
+                $('#endDate').val(),
+                $('#roomType').val(),
+              ).then((costs) => {
+                if (costs.nights === 1) {
+                  $('#roomPriceTotal').text('1 night: £' + costs.total.toFixed(2))
+                } else {
+                  $('#roomPriceTotal').text(
+                    costs.nights + ' nights: £' + costs.total.toFixed(2),
+                  )
+                }
+                $('#roomPriceDiscount').text(
+                  'Advance booking discount: -£' + costs.discount.toFixed(2),
+                )
+                $('#roomPricePerNight').text(
+                  'Room price: £' + costs.price_pn.toFixed(2) + ' p/n',
+                )
+                $('#priceTotal').text('Full total: £' + costs.paid.toFixed(2))
+              })
             }
-            $('#roomPriceDiscount').text(
-              'Advance booking discount: -£' + costs.discount.toFixed(2),
-            )
-            $('#roomPricePerNight').text(
-              'Room price: £' + costs.price_pn.toFixed(2) + ' p/n',
-            )
-            $('#priceTotal').text('Full total: £' + costs.paid.toFixed(2))
           })
         })
         .trigger('change')
