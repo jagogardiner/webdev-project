@@ -1,4 +1,4 @@
-from .model import Booking
+from .model import Booking, Currency
 
 
 class Costs:
@@ -7,6 +7,7 @@ class Costs:
         self.total = 0
         self.discount = 0
         self.paid = 0
+        self.currency = 0
         self.__calculateCosts(booking=booking)
         self.price_pn = self.total / self.nights
         pass
@@ -15,10 +16,15 @@ class Costs:
         """
         Calculates the costs of the booking.
         """
+        currency_type = booking.currency_type
+        currency = Currency.query.filter_by(id=currency_type).first()
+        self.currency = currency.rate
         if booking.start_date.month in range(4, 10):
             price_pn = booking.hotel.peakPrice
         else:
             price_pn = booking.hotel.offPeakPrice
+
+        price_pn *= currency.rate
 
         if booking.room_type == "double":
             if booking.guests == 2:

@@ -37,6 +37,7 @@ def cost_api():
         room_type=data["room_type"],
         start_date=datetime.strptime(data["start_date"], "%Y-%m-%d"),
         end_date=datetime.strptime(data["end_date"], "%Y-%m-%d"),
+        currency_type=data["currency"],
         guests=0,
         hotel_id=data["hotel_id"],
         user_id=1,
@@ -57,6 +58,7 @@ def api_make_booking():
     endDate = request.form.get("endDate")
     guestAmount = request.form.get("guestAmount")
     hotelId = request.form.get("hotelId")
+    currency_type = request.form.get("currency")
 
     # Generate random booking reference
     bookingReference = "".join(
@@ -66,6 +68,7 @@ def api_make_booking():
     try:
         new_booking = Booking(
             room_type=roomType,
+            currency_type=currency_type,
             start_date=startDate,
             end_date=endDate,
             guests=guestAmount,

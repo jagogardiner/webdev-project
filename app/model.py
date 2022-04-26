@@ -34,6 +34,7 @@ class Booking(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     hotel_id = db.Column(db.Integer, db.ForeignKey("hotel.id"))
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    currency_type = db.Column(db.Integer, db.ForeignKey("currency.id"))
     room_type = db.Column(db.String(10))
     guests = db.Column(db.Integer)
     start_date = db.Column(db.Date)
@@ -42,3 +43,10 @@ class Booking(db.Model, SerializerMixin):
     booking_reference = db.Column(db.String(20))
     hotel = db.relationship("Hotel")
     user = db.relationship("User")
+    currency = db.relationship("Currency")
+
+
+class Currency(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    currency = db.Column(db.String(10))
+    rate = db.Column(db.Float)

@@ -43,7 +43,7 @@ function addDays(date, days) {
  * @param {String} room_type
  * @returns {Promise}
  */
-async function getCosts(hotel_id, start_date, end_date, room_type) {
+async function getCosts(hotel_id, start_date, end_date, room_type, currency) {
   // Make a fetch request to the API endpoint
   const resp = await fetch('/api/costs', {
     method: 'POST',
@@ -54,6 +54,7 @@ async function getCosts(hotel_id, start_date, end_date, room_type) {
       start_date: start_date,
       end_date: end_date,
       room_type: room_type,
+      currency: currency,
     }),
   })
   // Recieve the JSON

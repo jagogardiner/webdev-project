@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 <!DOCTYPE html>
 <html lang="en">
 
@@ -80,6 +81,15 @@
                 <!-- Default to 1 and disable as default room is 'standard' -->
                 <select id="guestAmount" name="guestAmount" class="form-select" aria-label="Amount of guests">
                   <option value="1">1</option>
+                </select>
+              </div>
+              <div class="input-group mt-2">
+                <span class="input-group-text">Currency</span>
+                <!-- Default to 1 and disable as default room is 'standard' -->
+                <select id="currency" name="currency" class="form-select" aria-label="Currency conversion">
+                  <option value="1">GBP (£)</option>
+                  <option value="2">Euro (€)</option>
+                  <option value="3">USD ($)</option>
                 </select>
               </div>
               <input type="hidden" id="hotelId" name="hotelId" value="{{ hotel.id }}">
@@ -166,21 +176,35 @@
                 $('#startDate').val(),
                 $('#endDate').val(),
                 $('#roomType').val(),
+                $("#currency").val(),
               ).then((costs) => {
+                var currencyText = ''
+                var curr = $("#currency").val()
+                switch (curr) {
+                  case "1":
+                    currencyText = '£'
+                    break;
+                  case "2":
+                    currencyText = '€'
+                    break;
+                  case "3":
+                    currencyText = '$'
+                    break;
+                }
                 if (costs.nights === 1) {
-                  $('#roomPriceTotal').text('1 night: £' + costs.total.toFixed(2))
+                  $('#roomPriceTotal').text('1 night: ' + currencyText + costs.total.toFixed(2))
                 } else {
                   $('#roomPriceTotal').text(
-                    costs.nights + ' nights: £' + costs.total.toFixed(2),
+                    costs.nights + ' nights: ' + currencyText + costs.total.toFixed(2),
                   )
                 }
                 $('#roomPriceDiscount').text(
-                  'Advance booking discount: -£' + costs.discount.toFixed(2),
+                  'Advance booking discount: -' + currencyText + costs.discount.toFixed(2),
                 )
                 $('#roomPricePerNight').text(
-                  'Room price: £' + costs.price_pn.toFixed(2) + ' p/n',
+                  'Room price: ' + currencyText + costs.price_pn.toFixed(2) + ' p/n',
                 )
-                $('#priceTotal').text('Full total: £' + costs.paid.toFixed(2))
+                $('#priceTotal').text('Full total: ' + currencyText + costs.paid.toFixed(2))
               })
             }
           })
