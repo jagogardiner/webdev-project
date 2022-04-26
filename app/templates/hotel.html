@@ -49,7 +49,19 @@
             <h3>{{ hotel.city }}</h3>
             <p>
               This is a generic hotel description.<br /><br /><br />
-              Price: {{ hotel.offPeakPrice }}
+              Off Peak Price: {{ hotel.offPeakPrice }} per night.<br />
+              Peak Price: {{ hotel.peakPrice }} per night.<br />
+              <br />
+              Peak dates are in the months of April, May, June, July, August, September, October.<br />
+              <br />
+              Hotels are subject to availability and you will be informed on the booking page if your specified date is
+              not available. Please note that the hotel is not responsible for any damage or loss of personal property.
+              <br />
+              <br />
+              Standard capacity: {{ hotel.standardCapacity }} rooms.<br />
+              Double capacity: {{ hotel.doubleCapacity }} rooms. <br />
+              Family capacity: {{ hotel.familyCapacity }} rooms.
+              <br />
             </p>
             <div class="text-bottom mt-auto">
               <a href="/booking/{{ hotel.city }}" class="btn btn-success w-100">Book now</a>

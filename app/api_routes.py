@@ -256,10 +256,10 @@ def add_hotel():
     """
     API endpoint to add a new hotel.
     """
-    city = request.form["cityval"]
-    total_rooms = int(request.form["totalRoomsValue"])
-    off_peak_price = int(request.form["offPeakPriceValue"])
-    peak_price = int(request.form["peakPriceValue"])
+    city = request.form["cityvalModal"]
+    total_rooms = int(request.form["totalRoomsValueModal"])
+    off_peak_price = int(request.form["offPeakPriceValueModal"])
+    peak_price = int(request.form["peakPriceValueModal"])
 
     hotel = Hotel(
         city=city,
@@ -287,8 +287,8 @@ def add_hotel():
 
     os.mkdir(os.path.join(current_app.root_path, "static/images/", city))
     # get files from form
-    if "imageFileUpload1" in request.files and not None:
-        image_slot_1 = request.files["imageFileUpload1"]
+    if "imageFileUpload1Modal" in request.files and not None:
+        image_slot_1 = request.files["imageFileUpload1Modal"]
         if not image_slot_1.filename == "":
             image_slot_1.save(
                 os.path.join(
@@ -298,8 +298,8 @@ def add_hotel():
                     "image1.jpg",
                 )
             )
-    if "imageFileUpload2" in request.files and not None:
-        image_slot_2 = request.files["imageFileUpload2"]
+    if "imageFileUpload2Modal" in request.files and not None:
+        image_slot_2 = request.files["imageFileUpload2Modal"]
         if not image_slot_2.filename == "":
             image_slot_2.save(
                 os.path.join(
@@ -309,8 +309,8 @@ def add_hotel():
                     "image2.jpg",
                 )
             )
-    if "imageFileUpload3" in request.files and not None:
-        image_slot_3 = request.files["imageFileUpload3"]
+    if "imageFileUpload3Modal" in request.files and not None:
+        image_slot_3 = request.files["imageFileUpload3Modal"]
         if not image_slot_3.filename == "":
             image_slot_3.save(
                 os.path.join(
