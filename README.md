@@ -12,10 +12,3 @@ source venv/bin/activate
 pip install -r requirements.txt
 flask run
 ```
-
-Can be ran outside of a virtual environment, however, will install lots of flask requirements to your system.
-
-# Current to-do/bugs:
-
-- Website does crash on /locations without MySQL connection to valid database
-- Administrator dashboard is not implemented
